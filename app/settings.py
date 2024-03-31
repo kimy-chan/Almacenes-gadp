@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'alamcenes-gadp',
+        'NAME': 'almacenes-gadp',
         'USER': 'postgres',
         'PASSWORD': 'kanna',
         'HOST': 'localhost', # o la dirección del servidor donde se encuentra tu base de datos
@@ -126,3 +126,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL='almacenes.User'
