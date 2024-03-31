@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'alamcenes-gadp',
+        'USER': 'postgres',
+        'PASSWORD': 'kanna',
+        'HOST': 'localhost', # o la dirección del servidor donde se encuentra tu base de datos
+        'PORT': '5432'
     }
 }
 
