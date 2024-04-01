@@ -79,9 +79,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'almacenes-gadp',
         'USER': 'postgres',
-        'PASSWORD': 'kanna',
+        'PASSWORD': '80804',
         'HOST': 'localhost', # o la dirección del servidor donde se encuentra tu base de datos
-        'PORT': '5432'
+        'PORT': '5433'
     }
 }
 

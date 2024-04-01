@@ -12,7 +12,15 @@ class User(AbstractUser):
     person= models.ForeignKey(Person, on_delete=models.CASCADE)
   
 class Product(models.Model):
-    pass
+    codigo=models.CharField(max_length=15)
+    nombre_producto = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=255)
+    precio = models.DecimalField(max_digits=8, decimal_places=2)
 
+ 
 class category(models.Model):
-    pass
+    nombre_categoria=models.CharField(max_length=30)
+    descripcion=models.CharField(max_length=255)
+    fecha_modificacion=models.CharField(max_length=25)
+
+    
