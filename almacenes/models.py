@@ -19,16 +19,21 @@ class Person(TablesDate):
   
 class User(AbstractUser):
     person= models.ForeignKey(Person, on_delete=models.CASCADE)
+
+class Category(TablesDate):
+    nombre_categoria=models.CharField(max_length=30)
+    descripcion=models.CharField(max_length=255)
+    
   
 class Product(TablesDate):
     codigo=models.CharField(max_length=15)
     nombre_producto = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=255)
     precio = models.DecimalField(max_digits=8, decimal_places=2)
+    categoria = models.ForeignKey(Category, on_delete=models.CASCADE)
+    
 
  
-class category(TablesDate):
-    nombre_categoria=models.CharField(max_length=30)
-    descripcion=models.CharField(max_length=255)
+
 
     
