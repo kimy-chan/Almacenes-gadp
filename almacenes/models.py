@@ -1,8 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 # Create your models here.
 
-class Person(models.Model):
+
+class TablesDate(models.Model):
+    fecha_creation= models.DateTimeField(default=timezone.now)
+    class Meta:
+        abstract = True
+    
+
+
+class Person(TablesDate):
     cedulaIdentidad= models.CharField(max_length=20)
     nombre = models.CharField(max_length=50)
     apellidos= models.CharField(max_length=60)
@@ -11,16 +20,15 @@ class Person(models.Model):
 class User(AbstractUser):
     person= models.ForeignKey(Person, on_delete=models.CASCADE)
   
-class Product(models.Model):
+class Product(TablesDate):
     codigo=models.CharField(max_length=15)
     nombre_producto = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=255)
     precio = models.DecimalField(max_digits=8, decimal_places=2)
 
  
-class category(models.Model):
+class category(TablesDate):
     nombre_categoria=models.CharField(max_length=30)
     descripcion=models.CharField(max_length=255)
-    fecha_modificacion=models.CharField(max_length=25)
 
     
