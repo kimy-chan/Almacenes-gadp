@@ -2,35 +2,35 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
-
-class TablesDate(models.Model):
+class Fechas(models.Model):
     fecha_creation= models.DateTimeField(default=timezone.now)
     class Meta:
         abstract = True
     
 
-
-class Person(TablesDate):
-    cedulaIdentidad= models.CharField(max_length=20)
+class Persona(Fechas):
+    cedula_identidad= models.CharField(max_length=20)
     nombre = models.CharField(max_length=50)
     apellidos= models.CharField(max_length=60)
-    item= models.CharField(max_length=10)
+
+class Proveedor(Fechas):
+    empresa= models.CharField(max_length=100)
+    nit = models.CharField(max_length=20)
+    telefono = models.CharField(max_length=20)
+    correo = models.EmailField(max_length=255)
+    pais = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=100)
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.pais
+    
+
   
 class User(AbstractUser):
-    person= models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
+    person= models.ForeignKey(Persona, on_delete=models.CASCADE, null=True)
 
-class Category(TablesDate):
-    nombre_categoria=models.CharField(max_length=30)
-    descripcion=models.CharField(max_length=255)
 
-  
-class Product(TablesDate):
-    codigo=models.CharField(max_length=15)
-    nombre_producto = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=255)
-    precio = models.DecimalField(max_digits=8, decimal_places=2)
-    categoria = models.ForeignKey(Category, on_delete=models.CASCADE)
-    
 
  
 
