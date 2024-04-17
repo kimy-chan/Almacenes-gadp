@@ -6,7 +6,7 @@
 <div class="container">
     <div class="text-center">AGREGAR PROVEEDORES</div>
 
-    <form method="POST" action="/proveedor">
+    <form method="POST" action="{% url 'añadir_proveedor' %}">
         {% csrf_token %}
         <div class="row">
             <div class="form-group col-6">
@@ -50,7 +50,7 @@
             </div>
             <div class="text-center mt-3">
                 <button type="submit" class="btn btn-primary">Enviar</button>
-                <button type="submit" class="btn btn-secondary">Cancelar</button>
+                <a type="submit" href="{% url 'listar_proveedor'%}" class="btn btn-secondary">Cancelar</a>
             </div>
         </div>
     </form>
