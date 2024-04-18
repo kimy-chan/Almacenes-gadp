@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django_countries',
     'almacenes.persona',
     'almacenes.proveedor',
+    'almacenes.productos',
+    'almacenes.usuarios',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -132,3 +134,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #AUTH_USER_MODEL='almacenes.User'
+
+LOGIN_REDIRECT_URL = '/'
