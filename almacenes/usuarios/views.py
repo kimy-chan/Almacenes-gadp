@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, logout, login
 
 # Create your views here.
 
-def creando_usarios(request):
+def login(request):
     if(request.method=='POST'):
         print(request)
         username = request.POST["username"]
@@ -18,6 +18,14 @@ def creando_usarios(request):
 
     else:
          return render(request, 'registration/login.html')
+
+
+def creando_usuario(request):
+     
+     return HttpResponse("hola")
+
+def listando_usarios(request):
+     return HttpResponse("listando usuarios")
 
 
 def logout_view(request):

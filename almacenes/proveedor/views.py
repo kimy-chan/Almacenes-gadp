@@ -5,7 +5,6 @@ from .models import Proveedor
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 
-@login_required()
 def listar_proveedores(request):
     #id_use=request.user.id   //recuepra el id del usuario
     listar_proveedores = Proveedor.objects.select_related('persona').all()
