@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'almacenes.proveedor',
     'almacenes.productos',
     'almacenes.usuarios',
-    'almacenes.pedido',
+    'almacenes.pedidos',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

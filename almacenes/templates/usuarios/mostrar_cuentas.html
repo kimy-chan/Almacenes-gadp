@@ -1,0 +1,36 @@
+{% extends '../base.html' %}
+
+{% block index %}
+
+<div class="container table-responsive">
+    <h2 class="text-center">Cuentas de usuario</h2>
+    <a class="btn btn-success" href="{%url 'creando_usuarios' %}">Añadir</a>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre Completo</th>
+                <th scope="col">C.I</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for cuentas in listado_cuentas %}
+            <tr>
+                <td>{{cuentas.persona.nombre}} {{cuentas.persona.apellidos}}</td>
+                <td>{{cuentas.persona.cedula_identidad}}</td>
+                <td>{{cuentas.username}}</td>
+                <td>{{cuentas.rol}}</td>
+                <td>{{cuentas.is_staff}}</td>
+
+                <td>edita| eliminar</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock index %}
