@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 class Fechas(models.Model):
-    fecha_creation= models.DateTimeField(default=timezone.now)
+    fecha_creation= models.DateTimeField(auto_now_add=True)
     class Meta:
         abstract = True
     
