@@ -1,0 +1,40 @@
+{% extends '../base.html' %}
+
+{% block index %}
+<div class="container">
+    <h2 class="text-center mb-3 ">Informacion</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Nombre:</strong> {{ producto.nombre }}</p>
+            <p><strong>Código:</strong> {{ producto.codigo }}</p>
+            <p><strong>Marca:</strong> {{producto.marca }}</p>
+            <p><strong>Cantidad por Unidad:</strong> {{producto.cantidad_unidad }}</p>
+            <p><strong>Cantidad por Paquetes:</strong> {{ producto.cantidad_paquete }}</p>
+            <p><strong>Precio por Unidad:</strong> {{ producto.precio_unidad }}</p>
+            <p><strong>Precio por Paquetes:</strong> {{ producto.precio_paquete }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Fecha de Creación:</strong> {{ producto.fecha_creacion }}</p>
+            {%if producto.tamaño != None %}
+            <p><strong>Tamaño:</strong> {{ producto.tamaño }}</p>
+            {%endif%}
+            {%if producto.color != None %}
+            <p><strong>Color:</strong> {{ producto.color }}</p>
+            {%endif%}
+            {%if producto.unidad_medida != None %}
+            <p><strong>Unidad de Medida:</strong> {{ producto.unidad_medida }}</p>
+            {%endif%}
+            {%if producto.material != None %}
+            <p><strong>Material:</strong> {{ producto.material }}</p>
+            {%endif%}
+            {%if producto.numero_serie != None %}
+            <p><strong>Número de Serie:</strong> {{ producto.numero_serie }}</p>
+            {%endif%}
+            {%if producto.categoria.nombre != None %}
+            <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
+            {%endif%}
+        </div>
+    </div>
+</div>
+</div>
+{% endblock index %}

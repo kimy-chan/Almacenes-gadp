@@ -5,12 +5,14 @@
 
 <h1>pruductps</h1>
 <div class="container">
-    <form action="" method="post">
+    <form action="{%url 'crear_producto'%}" method="POST">
+        {% csrf_token %}
         <div class="row">
             {%for field in form %}
             <div class="col-6">
                 <label for="exampleFormControlInput1" class="form-label">{{field.label}}</label>
                 {{field}}
+                {{field.errors}}
             </div>
             {% endfor%}
         </div>

@@ -7,7 +7,6 @@ from django.db import transaction
 from ..persona.models import Persona 
 from .models import Usuario
 
-
 # Create your views here.
 
 def login_sistema(request):

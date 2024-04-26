@@ -31,16 +31,12 @@
                                 <i class="fs-4 bi-speedometer2"></i> <span
                                     class="ms-1 d-none d-sm-inline">Productos</span> </a>
                             <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                                <li class="w-100">
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span>
-                                        1
-                                    </a>
+                                {%for categoria in categoria_sidebar %}
+                                <li class="list-group-item"><a
+                                        href="{% url 'categorias_por_id' categoria.id %}">{{categoria.nombre}}</a>
                                 </li>
-                                <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span>
-                                        2
-                                    </a>
-                                </li>
+
+                                {%endfor%}
                             </ul>
                         </li>
                         <li>
