@@ -12,10 +12,12 @@ class Productos(models.Model):
     nombre = models.CharField(max_length=255,blank=False, null=False,)
     codigo = models.CharField(max_length=255, blank=False, null=False, unique=True,  error_messages={'unique':'El codigo de producto ya existe'})
     marca = models.CharField(max_length=255, blank=False, null=False)
-    cantidad_unidad = models.IntegerField(blank=False, null=False,verbose_name='Cantidad por unidad')
     cantidad_paquete=models.IntegerField(blank=False, null=False, verbose_name='Cantidad por paquetes')
+    cantidad_paquete_unidad = models.IntegerField(blank=False, null=False,verbose_name='Cantidad por paquetes (en unidades)')
+    total_paquetes = models.IntegerField(null=True)
     precio_unidad = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False,verbose_name='Precio por unidad')
     precio_paquete = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False,verbose_name='Precio por paquetes')
+    total_precio= models.DecimalField(max_digits=10, decimal_places=2, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     tamaño = models.CharField(max_length=255,blank=True, null=True)
     color = models.CharField(max_length=100,blank=True, null=True)
@@ -26,5 +28,12 @@ class Productos(models.Model):
 
     def __str__(self) -> str:
         return f"""{self.nombre},{self.codigo},{self.marca},
-        {self.cantidad_unidad},{self.cantidad_paquete},{self.fecha_creacion},
+        {self.cantidad_paquete_unidad},{self.cantidad_paquete},{self.fecha_creacion},
         {self.tamaño},{self.unidad_medida},{self.material},{self.numero_serie},{self.categoria}"""
+
+    def calcular_total_paquetes(self):
+        self.total_paquetes= self.cantidad_paquete * self.cantidad_paquete_unidad
+        self.save()
+    def calcular_precio_total(self):
+        self.total_precio= self.precio_paquete * self.precio_unidad
+        self.save()

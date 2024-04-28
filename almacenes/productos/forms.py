@@ -4,20 +4,19 @@ from .models import Categoria, Productos
 class Formulario_productos(forms.ModelForm):
     class Meta:
         model=Productos
-        fields=['nombre','codigo','marca','cantidad_paquete','cantidad_unidad','precio_paquete','precio_unidad','tamaño','color','unidad_medida',
-             'material','numero_serie','categoria']
+        fields = ['nombre', 'codigo', 'marca', 'cantidad_paquete', 'cantidad_paquete_unidad', 'precio_unidad', 'precio_paquete',  'tamaño', 'color', 'unidad_medida', 'material', 'numero_serie', 'categoria']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control',}),
             'codigo': forms.TextInput(attrs={'class': 'form-control'}),
             'marca': forms.TextInput(attrs={'class': 'form-control'}),
-            'cantidad_unidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad_paquete': forms.TextInput(attrs={'class': 'form-control'}),
             'precio_unidad': forms.TextInput(attrs={'class': 'form-control'}),
             'tamaño': forms.TextInput(attrs={'class': 'form-control'}),
             'color': forms.TextInput(attrs={'class': 'form-control'}),
             'unidad_medida': forms.TextInput(attrs={'class': 'form-control'}),
             'material': forms.TextInput(attrs={'class': 'form-control'}),
             'numero_serie': forms.TextInput(attrs={'class': 'form-control'}),
-            'cantidad_paquete': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad_paquete_unidad': forms.TextInput(attrs={'class': 'form-control'}),
             'precio_paquete': forms.TextInput(attrs={'class': 'form-control'})
         }
      
@@ -37,5 +36,3 @@ class Formulario_categoria(forms.ModelForm):
         }
 
         
-
- 

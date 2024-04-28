@@ -70,7 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'almacenes.utils.context_processors.listado_categorias_sidebar'
+                'almacenes.utils.context_processors.listado_categorias_sidebar',
+                'almacenes.utils.context_processors.user_datos'
             ],
         },
     },

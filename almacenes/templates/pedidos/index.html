@@ -1,28 +1,57 @@
 {% extends '../base.usuarios.html' %}
 
 {% block usuario %}
-<div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Categoría</th>
-                <th>Nombre</th>
-                <th>Código</th>
-                <th>Marca</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Tamaño</th>
-                <th>Color</th>
-                <th>Unidad de Medida</th>
-                <th>Material</th>
-                <th>Tipo</th>
-                <th>Número de Serie</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-sm-12 col-md-4">
+            <form action="{%url 'index' %}" method="POST">
+                {% csrf_token %}
+                <div>Buscar por categoria</div>
+                <select class="form-select" name="categoria_id">
+                    {%for categoria in listado_categoria %}
+                    <option value="{{categoria.id}}">{{categoria.nombre}}</option>
+                    {% endfor %}
+                </select>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Buscar</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 col-md-8">
+            <div>
+                <form action="" method="post">
+                    <label for="site-search">Search the site:</label>
+                    <input type="search" id="site-search" name="q" />
 
-        </tbody>
-    </table>
+                    <button>Search</button>
+                </form>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Nombre</th>
+                        <th>Código</th>
+                        <th>Marca</th>
+                        <th>Cantidad</th>
+                        <th>Tamaño</th>
+                        <th>Acción</th> <!-- Corregido "Accion" a "Acción" -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for producto in productos %}
+                    <tr>
+                        <th> {{producto.nombre}}</th>
+                    </tr>
+                    {% endfor%}
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
 </div>
+
 
 {% endblock usuario %}
