@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            {%for cuentas in listado_cuentas %}
+            {%for cuentas in data %}
             <tr>
                 <td>{{cuentas.persona.nombre}} {{cuentas.persona.apellidos}}</td>
                 <td>{{cuentas.persona.cedula_identidad}}</td>
@@ -31,6 +31,7 @@
             {% endfor %}
         </tbody>
     </table>
+    {% include 'paginador/paginador.html' %}
 </div>
 
 {% endblock index %}

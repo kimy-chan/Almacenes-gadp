@@ -1,52 +1,61 @@
 {% extends '../base.usuarios.html' %}
 
 {% block usuario %}
-<div class="container-fluid ">
+<div class="container-fluid mt-5 ">
     <div class="row">
         <div class="col-sm-12 col-md-4">
             <form action="{%url 'index' %}" method="POST">
                 {% csrf_token %}
-                <div>Buscar por categoria</div>
+                <h4>Buscar por categoria</h4>
                 <select class="form-select" name="categoria_id">
                     {%for categoria in listado_categoria %}
                     <option value="{{categoria.id}}">{{categoria.nombre}}</option>
                     {% endfor %}
                 </select>
-                <div class="text-center">
+                <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success">Buscar</button>
                 </div>
             </form>
         </div>
         <div class="col-sm-12 col-md-8">
-            <div>
-                <form action="" method="post">
-                    <label for="site-search">Search the site:</label>
-                    <input type="search" id="site-search" name="q" />
-
-                    <button>Search</button>
-                </form>
+            <div class="text-center">
+                <h3>Lista de materiales</h3>
             </div>
-            <table class="table">
+
+            <table class="table mt-4">
                 <thead>
                     <tr>
-                        <th>Categoría</th>
+                        <th>Codigo</th>
                         <th>Nombre</th>
-                        <th>Código</th>
                         <th>Marca</th>
-                        <th>Cantidad</th>
-                        <th>Tamaño</th>
+                        <th>Disponible</th>
+                        <th>Selec. cantidad</th>
                         <th>Acción</th> <!-- Corregido "Accion" a "Acción" -->
                     </tr>
                 </thead>
                 <tbody>
-                    {%for producto in productos %}
+                    {%for producto in data %}
                     <tr>
+                        <th> {{producto.codigo}}</th>
                         <th> {{producto.nombre}}</th>
+                        <th> {{producto.marca}}</th>
+                        <th> {{producto.stock}}</th>
+                        <th>
+                            <input style="width: 80px;" type="number" value="1" name="" class="form-control input-sm"
+                                id="">
+                        </th>
+                        <th><a href="">Ordenar</a> <a href="">Ver mas</a></th>
+
                     </tr>
+                    {% empty %}
+                    <div class="text-center">
+                        <h3> Lista de productos vacia </h3>
+                    </div>
                     {% endfor%}
 
                 </tbody>
             </table>
+            {% include 'paginador/paginador.html' %}
         </div>
 
 

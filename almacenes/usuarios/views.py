@@ -7,6 +7,8 @@ from django.db import transaction
 from ..persona.models import Persona 
 from .models import Usuario
 
+from almacenes.utils.paginador import paginador_general
+
 # Create your views here.
 
 def login_sistema(request):
@@ -55,8 +57,9 @@ def creando_usuario(request):
 
 def listando_usuarios(request):
     listado_cuentas_usuarios = Usuario.objects.select_related('persona').all()
+    listado_cuentas_usuarios = paginador_general(request, listado_cuentas_usuarios)
     context={
-        'listado_cuentas':listado_cuentas_usuarios
+        'data':listado_cuentas_usuarios
     }
     return render(request, 'usuarios/mostrar_cuentas.html', context)
 

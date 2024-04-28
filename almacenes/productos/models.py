@@ -14,7 +14,7 @@ class Productos(models.Model):
     marca = models.CharField(max_length=255, blank=False, null=False)
     cantidad_paquete=models.IntegerField(blank=False, null=False, verbose_name='Cantidad por paquetes')
     cantidad_paquete_unidad = models.IntegerField(blank=False, null=False,verbose_name='Cantidad por paquetes (en unidades)')
-    total_paquetes = models.IntegerField(null=True)
+    stock = models.IntegerField(null=True)
     precio_unidad = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False,verbose_name='Precio por unidad')
     precio_paquete = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False,verbose_name='Precio por paquetes')
     total_precio= models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -32,7 +32,7 @@ class Productos(models.Model):
         {self.tamaño},{self.unidad_medida},{self.material},{self.numero_serie},{self.categoria}"""
 
     def calcular_total_paquetes(self):
-        self.total_paquetes= self.cantidad_paquete * self.cantidad_paquete_unidad
+        self.stock= self.cantidad_paquete * self.cantidad_paquete_unidad
         self.save()
     def calcular_precio_total(self):
         self.total_precio= self.precio_paquete * self.precio_unidad
