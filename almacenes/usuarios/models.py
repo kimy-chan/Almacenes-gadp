@@ -17,8 +17,10 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     item = models.CharField(max_length=100)
     is_staff= models.CharField(default=True)
     rol = models.CharField(max_length=100, choices=ROLES, default='user')
+    cargo = models.CharField(max_length=255, blank=False , null=False)
+    nombre_secretaria=models.CharField(max_length=200, blank=True , null=True)
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE) 
-
+    
     
     objects = UserManager()
     USERNAME_FIELD = 'username'

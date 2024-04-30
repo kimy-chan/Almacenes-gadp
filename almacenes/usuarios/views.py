@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render, HttpResponse
+from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, logout, login
 from django.contrib import messages
 from django.urls import reverse
@@ -13,18 +13,18 @@ from almacenes.utils.paginador import paginador_general
 
 def login_sistema(request):
     if(request.method=='POST'):
-        print(request)
+        print("hola soy el post")
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
+        print(user)
         if user is not None:
             login(request, user)
             return redirect(reverse('index'))
         else:
             return render(request, 'usuarios/login.html', {'error_message': 'Credenciales inválidas'})
-
     else:
-         return render(request, 'usuarios/login.html')
+        return render(request, 'usuarios/login.html')
 
 
 def creando_usuario(request):

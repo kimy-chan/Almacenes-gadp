@@ -21,13 +21,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        {{usuario.persona.nombre}} {{usuario.persona.apellidos}}
+                        <a href="" class="nav-link" href="#">Nombre: {{usuario.persona.nombre}}
+                            {{usuario.persona.apellidos}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Mis pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Material en general</a>
+                        <a class="nav-link" href="{%url 'index' %}">Material en general</a>
                     </li>
                     {% if usuario.rol == 'admin' %}
 
