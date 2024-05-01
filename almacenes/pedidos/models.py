@@ -15,18 +15,13 @@ class Pedido(models.Model):
     descripcion =models.TextField(blank=False , null=False)
     unidad_manejo=models.CharField(max_length=20, blank= False ,null= False)
     cantidad_pedido=models.IntegerField(blank=False, null=False)
-    cantidad_entrega_almacen=models.IntegerField()
-    partida_presupuestada=models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad_entrega_almacen=models.IntegerField(blank= True ,null= True)
+    partida_presupuestada=models.DecimalField(max_digits=10, decimal_places=2,blank= True ,null= True)
     estado_autorizacion = models.CharField(choices=ESTADO_AUTORIZACION, default='No autorizado')
     estado_pedido = models.CharField(choices=ESTADO_PEDIDO_CHOICES, default='Pendiente')
-    usuario=models.ForeignKey(Usuario , models.CASCADE , blank= False, name=False)
-    productos= models.ManyToManyField(Productos, through='DetallePedido', blank= False, name=False)
+    usuario=models.ForeignKey(Usuario , on_delete=models.CASCADE , blank= False, name=False)
+    producto= models.ForeignKey(Productos, on_delete=models.CASCADE,  blank= False, name=False)
+    fecha_pedido= models.DateTimeField(auto_now_add=True, blank=False, null=False)
 
-    REQUIRED_FIELDS = ['estado_pedido']
-
-
-
-class DetallePedido(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
-    
+    def __str__(self) -> str:
+        return f"Descripción: {self.descripcion}, Unidad de manejo: {self.unidad_manejo}, Cantidad pedido: {self.cantidad_pedido}, Cantidad entrega almacen: {self.cantidad_entrega_almacen}, Partida presupuestada: {self.partida_presupuestada}, Estado de autorización: {self.estado_autorizacion}, Estado del pedido: {self.estado_pedido}, Usuario: {self.usuario}, Producto: {self.producto}, Fecha de pedido: {self.fecha_pedido}"

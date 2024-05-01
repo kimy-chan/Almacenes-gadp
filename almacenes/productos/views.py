@@ -34,7 +34,6 @@ def crear_producto(request):
         if(formulario.is_valid()):
             producto= formulario.save()
             producto.calcular_total_paquetes()
-            producto.calcular_precio_total() 
         else:
             formulario= Formulario_productos(request.POST)
     else: 

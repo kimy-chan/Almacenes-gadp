@@ -1,47 +1,71 @@
 {% extends '../../base.html' %}
 
 {% block index %}
-
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12 col-md-4 col-lg-4">
-            <form action="{%url 'crear_categoria' %}" method="POST">
-                {% csrf_token %}
-                {{form}}
-                <div class="text-center mt-3">
-                    <button class="btn btn-success" type="submit">Guardar</button>
+    <!-- Button trigger modal -->
+
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Nueva categoría
+        </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Añadir categoría</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </form>
-        </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Nombre categoria</th>
-                            <th scope="col">Codigo</th>
-                            <th scope="col">Fecha</th>
-
-                            <th scope="col">Acciones</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {%for categoria in categorias %}
-                        <tr>
-                            <td>{{categoria.nombre}}</td>
-                            <td>{{categoria.codigo_clasificacion}}</td>
-                            <td>{{categoria.fecha_creacion}}</td>
-                            <td>edita| eliminar</td>
-
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="modal-body">
+                    <form id="categoriaForm" action="{% url 'crear_categoria' %}" method="POST">
+                        {% csrf_token %}
+                        {{form}}
+                        <div class="text-center mt-3">
+                            <button class="btn btn-success" type="submit">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre categoria</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Fecha</th>
+
+                <th scope="col">Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {%for categoria in categorias %}
+            <tr>
+                <td>{{categoria.nombre}}</td>
+                <td>{{categoria.codigo_clasificacion}}</td>
+                <td>{{categoria.fecha_creacion}}</td>
+                <td>edita| eliminar</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+
 {% endblock index %}
+{ %jsblock js %}
+
+
+{ % endjsblock js%}

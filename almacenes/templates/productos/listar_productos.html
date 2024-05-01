@@ -12,12 +12,7 @@
                 <th scope="col">Marca</th>
                 <th scope="col">Cant. por paquete</th>
                 <th scope="col">Paq. por unidad</th>
-                <th scope="col">Total por unidad</th>
-                <th scope="col">Precio por caja</th>
-                <th scope="col">Precio por unidad</th>
-                <th scope="col">Precio total</th>
-
-
+                <th scope="col">Stock</th>
                 <th scope="col">Accion</th>
             </tr>
         </thead>
@@ -30,10 +25,7 @@
                 <td>{{producto.marca}}</td>
                 <td>{{producto.cantidad_paquete}}</td>
                 <td>{{producto.cantidad_paquete_unidad}}</td>
-                <td>{{producto.total_paquetes}}</td>
-                <td>{{producto.precio_paquete}}</td>
-                <td>{{producto.precio_unidad}}</td>
-                <td>{{producto.total_precio}}</td>
+                <td>{{producto.stock}}</td>
                 <td><a href="" class="btn btn-secondary btn-sm">Editar</a> <a href=""
                         class="btn btn-danger btn-sm">Eliminar</a> <a
                         href="{% url 'informacion_producto' producto.id %}" class="btn btn-info btn-sm">Ver mas</a>

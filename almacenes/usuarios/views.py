@@ -1,11 +1,13 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, logout, login
 from django.contrib import messages
 from django.urls import reverse
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 from .forms import Usuarios_formulario
 from django.db import transaction
 from ..persona.models import Persona 
-from .models import Usuario
+from .models import Usuario,Secretaria
 
 from almacenes.utils.paginador import paginador_general
 
@@ -41,14 +43,18 @@ def creando_usuario(request):
             email = formulario.cleaned_data['email']
             item = formulario.cleaned_data['item']
             rol = formulario.cleaned_data['rol']   
+            secretaria = formulario.cleaned_data['secretaria']
+            secretaria = get_object_or_404(Secretaria,id=secretaria)
             try:
                 with transaction.atomic():
                     persona = Persona.objects.create(cedula_identidad= cedula_identidad, nombre= nombre, apellidos=apellidos)
-                    Usuario.objects.create_user(username=username, password=password , email=email, item=item, rol=rol, persona=persona)
+                    Usuario.objects.create_user(username=username, password=password , email=email, item=item, rol=rol, persona=persona, secretaria=secretaria)
                     messages.success(request, 'Usuario creado')
                     return redirect(reverse("creando_usuarios"))
-            except Exception as e:
-                    mensaje_error="El usuario ya existe"                          
+            except IntegrityError as e:
+                    mensaje_error="El usuario ya existe" 
+            except  ValidationError as error:
+                    mensaje_error ='Error del  500'                        
     else:
         formulario= Usuarios_formulario()
         mensaje_error=None

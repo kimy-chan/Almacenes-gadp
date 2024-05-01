@@ -10,10 +10,9 @@
             <p><strong>Marca:</strong> {{producto.marca }}</p>
             <p><strong>Cantidad por Unidad:</strong> {{producto.cantidad_paquete_unidad }}</p>
             <p><strong>Cantidad por Paquetes:</strong> {{ producto.cantidad_paquete }}</p>
-            <p><strong>Precio por Unidad:</strong> {{ producto.precio_unidad }}</p>
-            <p><strong>Precio por Paquetes:</strong> {{ producto.precio_paquete }}</p>
-            <p><strong>Total por Paquetes:</strong> {{ producto.total_paquetes }}</p>
-            <p><strong>Total precios:</strong> {{ producto.total_precio }}</p>
+            <p><strong>Precio por Paquete:</strong> {{ producto.precio_paquete|floatformat:2 }}</p>
+            <p><strong>Stock:</strong> {{ producto.stock }}</p>
+
         </div>
         <div class="col-md-6">
             <p><strong>Fecha de Creación:</strong> {{ producto.fecha_creacion }}</p>
