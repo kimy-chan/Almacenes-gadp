@@ -4,10 +4,12 @@ from django.contrib import messages
 from django.urls import reverse
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from .forms import Usuarios_formulario
+from .forms import Usuario_formulario
 from django.db import transaction
 from ..persona.models import Persona 
 from .models import Usuario,Secretaria
+
+from almacenes.persona.forms import formulario_persona
 
 from almacenes.utils.paginador import paginador_general
 
@@ -30,35 +32,24 @@ def login_sistema(request):
 
 
 def creando_usuario(request):
-    mensaje_error=None
     if(request.method=="POST"):
-        formulario = Usuarios_formulario(request.POST)
-        if formulario.is_valid():
-
-            cedula_identidad = formulario.cleaned_data['cedula_identidad']
-            nombre = formulario.cleaned_data['nombre']
-            apellidos = formulario.cleaned_data['apellidos']
-            username = formulario.cleaned_data['username']
-            password = formulario.cleaned_data['password']
-            email = formulario.cleaned_data['email']
-            item = formulario.cleaned_data['item']
-            rol = formulario.cleaned_data['rol']   
-            secretaria = formulario.cleaned_data['secretaria']
-            secretaria = get_object_or_404(Secretaria,id=secretaria)
-            try:
-                with transaction.atomic():
-                    persona = Persona.objects.create(cedula_identidad= cedula_identidad, nombre= nombre, apellidos=apellidos)
-                    Usuario.objects.create_user(username=username, password=password , email=email, item=item, rol=rol, persona=persona, secretaria=secretaria)
-                    messages.success(request, 'Usuario creado')
-                    return redirect(reverse("creando_usuarios"))
-            except IntegrityError as e:
-                    mensaje_error="El usuario ya existe" 
-            except  ValidationError as error:
-                    mensaje_error ='Error del  500'                        
+        formulario_u = Usuario_formulario(request.POST)
+        formulario_p = formulario_persona(request.POST)
+        if formulario_u.is_valid() and  formulario_p.is_valid():
+            persona= formulario_p.save()
+            usuario= formulario_u.save(commit=False)
+            usuario.set_password(formulario_u.cleaned_data['password'])
+            usuario.persona=persona
+            usuario.save()
+        else:
+            formulario_u= Usuario_formulario(request.POST)
+            formulario_p = formulario_persona(request.POST)
     else:
-        formulario= Usuarios_formulario()
-        mensaje_error=None
-    context={'form':formulario,'mensaje_error':mensaje_error}
+        formulario_u= Usuario_formulario()
+        formulario_p = formulario_persona()
+    context={'form_usuario':formulario_u,
+             'form_persona':formulario_p,
+             }
     return render(request, 'usuarios/crear_cuenta_formulario.html', context)
 
 def listando_usuarios(request):

@@ -15,6 +15,8 @@ class Secretaria(models.Model):
         if sender.name == 'almacenes.usuarios':
             if not Secretaria.objects.exists():
                 Secretaria.objects.create(secretaria='Sin secretaria')
+    def __str__(self) -> str:
+        return f"{self.secretaria}"
         
         
 class Usuario(AbstractBaseUser, PermissionsMixin):
@@ -23,10 +25,10 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     ('admin', 'Administrador'),
     ]
 
-    username= models.CharField(max_length=150, unique=True, blank=False, null=False)
-    password = models.CharField(max_length=128, blank=False, null=False)
+    username= models.CharField(max_length=150, unique=True, blank=False, null=False, verbose_name='Usuario')
+    password = models.CharField(max_length=128, blank=False, null=False, verbose_name='Contraseña')
     email=models.EmailField(max_length=255)
-    item = models.CharField(max_length=100)
+    item = models.CharField(max_length=100, blank=True, null=True)
     is_staff= models.CharField(default=True)
     rol = models.CharField(max_length=100, choices=ROLES, default='user')
     cargo = models.CharField(max_length=255, blank=False , null=False)

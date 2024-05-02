@@ -4,43 +4,53 @@
 
 
 <div class="container">
-    {%if mensaje_error %}
-    <div class="alert alert-danger" role="alert">
-        {{mensaje_error}}
-    </div>
-    {% endif %}
-    <div class="container">
-        {%if messages %}
-        <div class="alert alert-success" role="alert">
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
-        </div>
-        {% endif %}
-        <form action="{% url 'creando_usuarios' %}" method="POST">
-            {% csrf_token %}
-            <div class="row">
-                {% for field in form %}
-                <div class="col-sm-12 col-md-6 ">
-                    <div class="form-group">
-                        <label for="{{ field.id_for_label }}" class="col-form-label">{{ field.label }}</label>
-                        {{ field}}
-                        {% if field.errors %}
-                        <ul class="errors">
-                            {{field.errors}}
-                        </ul>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
+    <form action="{% url 'creando_usuarios' %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-6">
+                {{ form_persona }}
+                <label for="{{ form_usuario.email.id_for_label }}"> {{ form_usuario.email.label}}: </label>
+                {{ form_usuario.email }}
+                {{form_usuario.email.errors}}
+                <label for="{{ form_usuario.item.id_for_label }}"> {{form_usuario.item.label}}:
+                </label>
+                {{ form_usuario.item}}
+                {{form_usuario.item.errors}}
+                <label for="{{ form_usuario.cargi.id_for_label }}"> {{form_usuario.cargo.label}}:
+                </label>
+                {{ form_usuario.cargo}}
+                {{form_usuario.cargo.errors}}
+            </div>
+            <div class="col-6">
 
+                <label for="{{ form_usuario.username.id_for_label }}"> {{ form_usuario.username.label}}: </label>
+                {{ form_usuario.username }}
+                {{form_usuario.username.errors}}
+                <label for="{{ form_usuario.password.id_for_label }}"> {{ form_usuario.password.label}}: </label>
+                {{ form_usuario.password }}
+                <label for="{{ form_usuario.confirmar_password.id_for_label }}">
+                    {{form_usuario.confirmar_password.label}}:
+                </label>
+                {{ form_usuario.confirmar_password }}
+                {{form_usuario.confirmar_password.errors}}
+
+                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.rol.label}}:
+                </label>
+                {{ form_usuario.rol }}
+                {{form_usuario.rol.errors}}
+
+                <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
+                </label>
+                {{ form_usuario.secretaria}}
+                {{form_usuario.rol.errors}}
             </div>
 
-    </div>
-    <div class="text-center mt-3">
-        <button class="btn btn-success" type="submit">Guardar</button>
 
-    </div>
+        </div>
+        <div class="text-center mt-3">
+            <button class="btn btn-success" type="submit">Guardar</button>
+
+        </div>
     </form>
 
 
