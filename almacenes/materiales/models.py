@@ -8,7 +8,7 @@ class Categoria(models.Model):
     def __str__(self) -> str:
         return f"{self.nombre},{self.codigo_clasificacion}, {self.fecha_creacion}"
 
-class Productos(models.Model):
+class Materiales(models.Model):
     nombre = models.CharField(max_length=255,blank=False, null=False,)
     codigo = models.CharField(max_length=255, blank=False, null=False, unique=True,  error_messages={'unique':'El codigo de producto ya existe'})
     marca = models.CharField(max_length=255, blank=False, null=False)
@@ -16,6 +16,7 @@ class Productos(models.Model):
     cantidad_paquete_unidad = models.IntegerField(blank=False, null=False,verbose_name='Cantidad por paquetes (en unidades)')
     stock = models.IntegerField(null=True)
     precio_paquete = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False,verbose_name='Precio por paquetes')
+    precio_unidad=models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False,verbose_name='Precio por Unidad')
     total_precio= models.DecimalField(max_digits=10, decimal_places=2, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     tamaño = models.CharField(max_length=255,blank=True, null=True)
@@ -32,4 +33,7 @@ class Productos(models.Model):
 
     def calcular_total_paquetes(self):
         self.stock= self.cantidad_paquete * self.cantidad_paquete_unidad
+        self.save()
+    def calcular_precio_total(self):
+        self.total_precio= self.precio_paquete * self.precio_unidad
         self.save()

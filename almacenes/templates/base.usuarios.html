@@ -25,12 +25,20 @@
                             {{usuario.persona.apellidos}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mis pedidos</a>
+                        <a class="nav-link" href="{%url 'mis_pedidos' %}">Mis pedidos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{%url 'index' %}">Material en general</a>
                     </li>
                     {% if usuario.rol == 'admin' %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ingresar al almacen</a>
+                    </li>
+
+                    {% endif %}
+
+                    {% if usuario.encargado_unidad == True %}
 
                     <li class="nav-item">
                         <a class="nav-link" href="#">Administracion</a>

@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django_countries',
     'almacenes.persona',
     'almacenes.proveedor',
-    'almacenes.productos',
+    'almacenes.materiales',
     'almacenes.usuarios',
     'almacenes.pedidos',
     'django.contrib.admin',
@@ -90,7 +90,10 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'kanna',
         'HOST': 'localhost', # o la dirección del servidor donde se encuentra tu base de datos
-        'PORT': '5432'
+        'PORT': '5432',
+         'OPTIONS': {
+            'options': '-c timezone=America/La_Paz',
+        },
     }
 }
 
@@ -118,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'es'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/La_Paz'
 
 USE_I18N = True
 

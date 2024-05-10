@@ -1,0 +1,42 @@
+{% extends '../base.html' %}
+
+{% block index %}
+<div class="container">
+    <h2 class="text-center mb-3 ">Informacion</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Nombre:</strong> {{ material.nombre }}</p>
+            <p><strong>Código:</strong> {{ material.codigo }}</p>
+            <p><strong>Marca:</strong> {{material.marca }}</p>
+            <p><strong>Cantidad por Unidad:</strong> {{material.cantidad_paquete_unidad }}</p>
+            <p><strong>Cantidad por Paquetes:</strong> {{ material.cantidad_paquete }}</p>
+            <p><strong>Precio por Paquete:</strong> {{ material.precio_paquete|floatformat:2 }}</p>
+            <p><strong>Precio por unidad:</strong> {{ material.precio_unidad|floatformat:2 }}</p>
+            <p><strong>Stock:</strong> {{ material.stock }}</p>
+
+        </div>
+        <div class="col-md-6">
+            <p><strong>Fecha de Creación:</strong> {{ material.fecha_creacion }}</p>
+            {%if material.tamaño != None %}
+            <p><strong>Tamaño:</strong> {{ material.tamaño }}</p>
+            {%endif%}
+            {%if material.color != None %}
+            <p><strong>Color:</strong> {{ material.color }}</p>
+            {%endif%}
+            {%if material.unidad_medida != None %}
+            <p><strong>Unidad de Medida:</strong> {{ material.unidad_medida }}</p>
+            {%endif%}
+            {%if material.material != None %}
+            <p><strong>Material:</strong> {{ material.material }}</p>
+            {%endif%}
+            {%if material.numero_serie != None %}
+            <p><strong>Número de Serie:</strong> {{ material.numero_serie }}</p>
+            {%endif%}
+            {%if material.categoria.nombre != None %}
+            <p><strong>Categoría:</strong> {{ material.categoria.nombre }}</p>
+            {%endif%}
+        </div>
+    </div>
+</div>
+</div>
+{% endblock index %}

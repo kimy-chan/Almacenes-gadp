@@ -43,6 +43,10 @@
                 </label>
                 {{ form_usuario.secretaria}}
                 {{form_usuario.rol.errors}}
+                <label for="{{ form_usuario.encargado_unidad.id_for_label }}"> {{form_usuario.encargado_unidad.label}}:
+                </label>
+                {{ form_usuario.encargado_unidad}}
+                {{form_usuario.encargado_unidad.errors}}
             </div>
 
 

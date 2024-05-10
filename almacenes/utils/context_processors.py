@@ -1,4 +1,4 @@
-from almacenes.productos.models import Categoria
+from almacenes.materiales.models import Categoria
 from almacenes.usuarios.models import Usuario
 from django.shortcuts import redirect
 

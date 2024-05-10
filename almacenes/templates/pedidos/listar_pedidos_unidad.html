@@ -1,0 +1,46 @@
+{% extends '../base.usuarios.html' %}
+
+{% block usuario %}
+
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Nombre completo</th>
+                <th>Material</th>
+                <th>descripcion</th>
+
+                <th>Cantidad de pedido</th>
+                <th>Estado</th>
+                <th>fecha</th>
+                <th>Autorizar</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in data %}
+            <tr>
+                <td>{{ pedido.material.codigo }}</td>
+                <td>{{ pedido.usuario.persona.nombre }} {{ pedido.usuario.persona.apellidos }}</td>
+                <td>{{ pedido.material.nombre }}</td>
+                <td>{{ pedido.descripcion }}</td>
+                <td>{{ pedido.cantidad_pedido}} {{ pedido.unidad_manejo}}</td>
+                <td>{{pedido.estado_autorizacion}}
+                </td>
+                <td>{{ pedido.fecha_pedido }}</td>
+                <td>
+
+
+                    <a href="{%url 'autorizar_pedido' pedido.id %}" class="btn btn-success btn-sm">Autorizar</a>
+
+                </td>
+                <th>
+                    {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock usuario %}

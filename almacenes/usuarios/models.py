@@ -17,14 +17,17 @@ class Secretaria(models.Model):
                 Secretaria.objects.create(secretaria='Sin secretaria')
     def __str__(self) -> str:
         return f"{self.secretaria}"
-        
+
         
 class Usuario(AbstractBaseUser, PermissionsMixin):
     ROLES = [
     ('user', 'Usuario'),
     ('admin', 'Administrador'),
     ]
-
+    ENCARGADO_UNIDAD_CHOICES=[
+        (True,'Jefe de la unidad'),
+        (False,'No es jefe de la unidad')
+    ]
     username= models.CharField(max_length=150, unique=True, blank=False, null=False, verbose_name='Usuario')
     password = models.CharField(max_length=128, blank=False, null=False, verbose_name='Contraseña')
     email=models.EmailField(max_length=255)
@@ -32,6 +35,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     is_staff= models.CharField(default=True)
     rol = models.CharField(max_length=100, choices=ROLES, default='user')
     cargo = models.CharField(max_length=255, blank=False , null=False)
+    encargado_unidad= models.BooleanField( blank=False, null=False, choices=ENCARGADO_UNIDAD_CHOICES)
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE) 
     

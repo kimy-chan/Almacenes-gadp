@@ -31,7 +31,6 @@
                         <th>Nombre</th>
                         <th>Marca</th>
                         <th>Disponible</th>
-                        <th>Selec. cantidad</th>
                         <th>Acción</th> <!-- Corregido "Accion" a "Acción" -->
                     </tr>
                 </thead>
@@ -42,11 +41,9 @@
                         <th> {{producto.nombre}}</th>
                         <th> {{producto.marca}}</th>
                         <th> {{producto.stock}}</th>
-                        <th>
-                            <input style="width: 80px;" type="number" value="1" name="" class="form-control input-sm"
-                                id="">
+                        <th><a class="btn btn-success btn-sm" href="{%url 'realizar_pedido' producto.id %}">Ordenar</a>
+                            <a class="btn btn-secondary btn-sm" href="">Ver mas</a>
                         </th>
-                        <th><a href="{%url 'realizar_pedido' producto.id %}">Ordenar</a> <a href="">Ver mas</a></th>
 
                     </tr>
                     {% empty %}

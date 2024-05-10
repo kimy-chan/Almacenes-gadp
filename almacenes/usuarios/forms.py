@@ -5,7 +5,7 @@ class Usuario_formulario(forms.ModelForm):
     confirmar_password= forms.CharField(label='confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}) )
     class Meta:
         model=Usuario
-        fields=['username','password','confirmar_password','email', 'item', 'rol','secretaria','cargo']
+        fields=['username','password','confirmar_password','email', 'item', 'rol','secretaria','encargado_unidad','cargo']
         widgets={
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -13,7 +13,8 @@ class Usuario_formulario(forms.ModelForm):
             'rol': forms.Select(attrs={'class': 'form-control'}),
             'item': forms.TextInput(attrs={'class': 'form-control'}),
             'confirmar_password':forms.PasswordInput(attrs={'class': 'form-control'}),
-            'cargo':forms.TextInput(attrs={'class': 'form-control'})
+            'cargo':forms.TextInput(attrs={'class': 'form-control'}),
+            'encargado_unidad':forms.Select(attrs={'class': 'form-control'})
         }
        
     def __init__(self, *args, **kwargs):

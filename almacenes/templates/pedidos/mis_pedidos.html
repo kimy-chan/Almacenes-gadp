@@ -1,0 +1,55 @@
+{% extends '../base.usuarios.html' %}
+
+{% block usuario %}
+
+<div class="container mt-2">
+    <div class="text-center">
+        <h2>{{ title}}</h2>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Material</th>
+                <th>descripcion</th>
+
+                <th>Cantidad de pedido</th>
+                <th>Cantidad de entrega</th>
+                <th>Estado de pedido</th>
+                <th>Fecha</th>
+                <th>Accion</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in data %}
+            <tr>
+                <td>{{ pedido.material.codigo }}</td>
+                <td>{{ pedido.material.nombre }}</td>
+                <td>{{ pedido.descripcion }}</td>
+                <td>{{ pedido.cantidad_pedido }}</td>
+                <td>{{ pedido.cantidad_entrega_almacen }}</td>
+                <td> {%if pedido.estado_autorizacion in 'No autorizado' %}
+                    <button disabled="disabled" class="btn btn-danger btn-sm">{{pedido.estado_autorizacion}}</button>
+                    {% else %}
+                    <button disabled="disabled" class="btn btn-success btn-sm">{{pedido.estado_autorizacion}}</button>
+                    {% endif %}
+                </td>
+                <td>{{ pedido.fecha_pedido }}</td>
+
+                <td>
+
+                <th> {%if pedido.estado_autorizacion in 'No autorizado' %}
+                    <a href="" class='btn btn-danger btn-sm'>Cancelar</a>
+                    {% endif %}
+
+                </th>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{%endblock usuario %}
