@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import Formulario_categoria,Formulario_materiales
-
+from django.http import JsonResponse
 
 
 from .models import Categoria, Materiales

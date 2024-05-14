@@ -17,26 +17,26 @@ class Secretaria(models.Model):
                 Secretaria.objects.create(secretaria='Sin secretaria')
     def __str__(self) -> str:
         return f"{self.secretaria}"
-
-        
+    
+class Roles(models.Model):
+    nombre_rol=models.CharField(max_length=100,blank=False, null=False)
+    def __str__(self) -> str:
+        return f"{self.nombre_rol}"  
+    
 class Usuario(AbstractBaseUser, PermissionsMixin):
-    ROLES = [
-    ('user', 'Usuario'),
-    ('admin', 'Administrador'),
-    ]
-    ENCARGADO_UNIDAD_CHOICES=[
-        (True,'Jefe de la unidad'),
-        (False,'No es jefe de la unidad')
+    ENCARGADO=[
+        ('Encargado','Encargado'),
+        ('Personal','Personal')
     ]
     username= models.CharField(max_length=150, unique=True, blank=False, null=False, verbose_name='Usuario')
     password = models.CharField(max_length=128, blank=False, null=False, verbose_name='Contraseña')
-    email=models.EmailField(max_length=255)
+    email=models.EmailField(max_length=255, blank=True, null=True)
     item = models.CharField(max_length=100, blank=True, null=True)
     is_staff= models.CharField(default=True)
-    rol = models.CharField(max_length=100, choices=ROLES, default='user')
-    cargo = models.CharField(max_length=255, blank=False , null=False)
-    encargado_unidad= models.BooleanField( blank=False, null=False, choices=ENCARGADO_UNIDAD_CHOICES)
-    secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
+    rol = models.ForeignKey(Roles, blank=False, null=False, on_delete=models.CASCADE)
+    encargado_secretaria=models.CharField( blank=False, null=False, choices=ENCARGADO,default=False, verbose_name='Jefe  de la secretaria' ) 
+    encargado_unidad= models.CharField( blank=False, null=False, choices=ENCARGADO,default=False ,verbose_name='Jefe de la unidad' )
+    secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE, blank=False, null=True)
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE) 
     
     
@@ -44,5 +44,4 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['rol']
 
-    def __str__(self) -> str:
-        return f"{self.rol}"
+  

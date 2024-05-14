@@ -1,5 +1,5 @@
 from almacenes.materiales.models import Categoria
-from almacenes.usuarios.models import Usuario
+from almacenes.usuarios.models import Usuario, Roles
 from django.shortcuts import redirect
 
 def listado_categorias_sidebar(request):
@@ -10,7 +10,7 @@ def user_datos(request):
     if request.user.is_authenticated:
         usuario_id = request.user.id 
         try:
-            usuario = Usuario.objects.select_related('persona').get(pk=usuario_id)
+            usuario = Usuario.objects.select_related('persona','rol').get(pk=usuario_id)
             return {'usuario':usuario}
         except:
              return {'usuario':None}

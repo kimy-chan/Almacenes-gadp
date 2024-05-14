@@ -4,6 +4,9 @@
 
 
 <div class="container">
+    <div class="text-center">
+        <h2>Añadir usuarios</h2>
+    </div>
     <form action="{% url 'creando_usuarios' %}" method="POST">
         {% csrf_token %}
         <div class="row">
@@ -16,7 +19,7 @@
                 </label>
                 {{ form_usuario.item}}
                 {{form_usuario.item.errors}}
-                <label for="{{ form_usuario.cargi.id_for_label }}"> {{form_usuario.cargo.label}}:
+                <label for="{{ form_usuario.cargi.id_for_label }}"> {{form_usuario.cargo.label}}
                 </label>
                 {{ form_usuario.cargo}}
                 {{form_usuario.cargo.errors}}
@@ -38,6 +41,12 @@
                 </label>
                 {{ form_usuario.rol }}
                 {{form_usuario.rol.errors}}
+                <label for="{{ form_usuario.encargado_secretaria.id_for_label }}">
+                    {{form_usuario.encargado_secretaria.label}}:
+                </label>
+                {{ form_usuario.encargado_secretaria}}
+                {{form_usuario.encargado_secretaria.errors}}
+
 
                 <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
                 </label>

@@ -100,18 +100,15 @@ def todos_mis_pedidos(request):
     }
     return render(request, 'pedidos/mis_pedidos.html', context)
 
-def listar_pedidos_unidad(request):
-    usuario= request.user
-    if  usuario.encargado_unidad:
-        pedidos_unidad= Pedido.objects.select_related('usuario','material').filter(usuario__secretaria=usuario.secretaria.id)
-        context={
+def listar_pedidos_unidad(request, id_usuario):
+    usuario = get_object_or_404(Usuario, pk=id_usuario)
+    
+    pedidos_unidad= Pedido.objects.select_related('usuario','material').filter(usuario__secretaria=usuario.secretaria.id)
+    context={
         'data':pedidos_unidad
         }
-
-   
-        return render(request, 'pedidos/listar_pedidos_unidad.html',context)
-    else:
-        return HttpResponse("no estas autorizado")
+    return render(request, 'pedidos/listar_pedidos_unidad.html',context)
+    
     
 def autorizar_pedidos(request, id_pedido):
     print(id_pedido)

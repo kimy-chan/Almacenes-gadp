@@ -30,20 +30,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{%url 'index' %}">Material en general</a>
                     </li>
-                    {% if usuario.rol == 'admin' %}
-
+                    {% if usuario.encargado_unidad == 'Encargado' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ingresar al almacen</a>
+                        <a class="nav-link"
+                            href="{% url 'listar_pedidos_unidad' usuario.id %}">{{usuario.rol.nombre_rol}}</a>
                     </li>
-
-                    {% endif %}
-
-                    {% if usuario.encargado_unidad == True %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Administracion</a>
-                    </li>
-
                     {% endif %}
 
                 </ul>

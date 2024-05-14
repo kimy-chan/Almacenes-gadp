@@ -16,16 +16,18 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Añadir categoría</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!-- Agrega un botón de cierre personalizado -->
+                    <button type="button" class="close" id="modalCloseButton" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="categoriaForm" action="{% url 'crear_categoria' %}" method="POST">
+                    <form id="categoriaForm" action="{% url 'crear_categoria' %}" method="POST" class="needs-validation"
+                        novalidate>
                         {% csrf_token %}
                         {{form}}
                         <div class="text-center mt-3">
-                            <button class="btn btn-success" type="submit">Guardar</button>
+                            <button class="btn btn-success" id="submitBtn" type="submit">Guardar</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </div>
                     </form>
@@ -33,39 +35,34 @@
             </div>
         </div>
     </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre categoria</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Fecha</th>
+
+                    <th scope="col">Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {%for categoria in categorias %}
+                <tr>
+                    <td>{{categoria.nombre}}</td>
+                    <td>{{categoria.codigo_clasificacion}}</td>
+                    <td>{{categoria.fecha_creacion}}</td>
+                    <td>edita| eliminar</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </div>
-
-
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Nombre categoria</th>
-                <th scope="col">Codigo</th>
-                <th scope="col">Fecha</th>
-
-                <th scope="col">Acciones</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            {%for categoria in categorias %}
-            <tr>
-                <td>{{categoria.nombre}}</td>
-                <td>{{categoria.codigo_clasificacion}}</td>
-                <td>{{categoria.fecha_creacion}}</td>
-                <td>edita| eliminar</td>
-
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-</div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock index %}
-{ %jsblock js %}
-
-
-{ % endjsblock js%}

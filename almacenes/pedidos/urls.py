@@ -9,7 +9,7 @@ urlpatterns = [
      path('informacion_pedido/<int:id_usuario>',informacion_pedido , name='informacion_pedido' ),
     path('mis_pedidos',mis_pedidos , name='mis_pedidos' ),
         path('todos_mis_pedidos',todos_mis_pedidos, name='todos_mis_pedidos' ),
-        path('listar_pedidos_unidad',listar_pedidos_unidad, name='listar_pedidos_unidad' ),
+        path('listar_pedidos_unidad/<int:id_usuario>',listar_pedidos_unidad, name='listar_pedidos_unidad' ),
            path('autorizar_pedido/<int:id_pedido>',autorizar_pedidos, name='autorizar_pedido' ),
 
 ]
