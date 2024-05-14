@@ -9,7 +9,8 @@ from ..persona.models import Persona
 
 
 class Secretaria(models.Model):
-    secretaria = models.CharField(max_length=100, blank=True , null=True) 
+    secretaria = models.CharField(max_length=100, blank=True , null=True, unique=True) 
+
     @receiver(post_migrate)
     def crear_secreatria_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
         if sender.name == 'almacenes.usuarios':
@@ -19,7 +20,8 @@ class Secretaria(models.Model):
         return f"{self.secretaria}"
     
 class Roles(models.Model):
-    nombre_rol=models.CharField(max_length=100,blank=False, null=False)
+    nombre_rol=models.CharField(max_length=100,blank=False, null=False, unique=True)
+    
     def __str__(self) -> str:
         return f"{self.nombre_rol}"  
     

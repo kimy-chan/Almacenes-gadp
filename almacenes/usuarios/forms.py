@@ -1,5 +1,9 @@
 from django import forms
 from .models import Secretaria,Usuario, Roles
+
+class Secretaria_formulario(forms.ModelForm):
+    pass
+
 class Usuario_formulario(forms.ModelForm):
     confirmar_password= forms.CharField(label='confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}) )
     class Meta:
