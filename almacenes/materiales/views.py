@@ -14,13 +14,14 @@ def crear_categoria(request):
         formulario= Formulario_categoria(request.POST)
         if formulario.is_valid():
             formulario.save()
-            return redirect(reverse('crear_categoria'))
+            return JsonResponse({'data':True})
         else:
-            formulario= Formulario_categoria(request.POST)  
-    
+            formulario= Formulario_categoria(request.POST)
+            errors=  dict(formulario.errors.items())
+            return JsonResponse({'errores':errors})
     else:
         formulario= Formulario_categoria()  
-    categorias = Categoria.objects.all()
+    categorias = Categoria.objects.all().order_by('-fecha_creacion')
     context={
         'form':formulario,
         'categorias':categorias

@@ -5,7 +5,7 @@
     <!-- Button trigger modal -->
 
     <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
             Nueva categoría
         </button>
     </div>
@@ -16,16 +16,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Añadir categoría</h5>
-                    <!-- Agrega un botón de cierre personalizado -->
-                    <button type="button" class="close" id="modalCloseButton" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                     <form id="categoriaForm" action="{% url 'crear_categoria' %}" method="POST" class="needs-validation"
                         novalidate>
                         {% csrf_token %}
-                        {{form}}
+                        <label for="{{ form.nombre.id_for_label }}"> {{ form.nombre.label}}: </label>
+                        {{form.nombre}}
+                        <span id="nombre"></span>
+                        <br>
+                        <label for="{{ form.codigo_clasificacion.id_for_label }}"> {{form.codigo_clasificacion.label}}:
+                        </label>
+                        {{form.codigo_clasificacion}}
+                        <span id="codigo"></span>
                         <div class="text-center mt-3">
                             <button class="btn btn-success" id="submitBtn" type="submit">Guardar</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -64,5 +67,30 @@
     </div>
 
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<script>
+    document.getElementById("submitBtn").addEventListener("click", (e) => {
+        e.preventDefault()
+        var formData = new FormData(document.getElementById("categoriaForm"));
+        axios.post('crear_categoria', formData)
+            .then((resultado) => {
+                if (resultado.data.errores) {
+                    console.log(resultado.data.errores.nombre);
+                    if (resultado.data.errores.nombre) {
+                        document.getElementById('nombre').innerHTML = resultado.data.errores.nombre
+                    }
+                    if (resultado.data.errores.codigo_clasificacion) {
+                        document.getElementById('codigo').innerHTML = resultado.data.errores.codigo_clasificacion
+                    }
+                } else if (resultado.data) {
+                    window.location.reload()
+                }
+            }).catch((e) => {
+                alert('Error de servidor')
+            })
+    })
+</script>
+
+
 {% endblock index %}

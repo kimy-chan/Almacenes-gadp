@@ -37,10 +37,21 @@
                 {{ form_usuario.confirmar_password }}
                 {{form_usuario.confirmar_password.errors}}
 
-                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.rol.label}}:
-                </label>
-                {{ form_usuario.rol }}
-                {{form_usuario.rol.errors}}
+                <div class="row">
+                    <div class="col-8">
+                        <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.rol.label}}:
+                        </label>
+                        {{ form_usuario.rol }}
+                        {{form_usuario.rol.errors}}
+                    </div>
+                    <div class="col-4 mt-4">
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                            data-target="#rolesMolal">
+                            +
+                        </button>
+                    </div>
+
+                </div>
                 <label for="{{ form_usuario.encargado_secretaria.id_for_label }}">
                     {{form_usuario.encargado_secretaria.label}}:
                 </label>
@@ -48,10 +59,21 @@
                 {{form_usuario.encargado_secretaria.errors}}
 
 
-                <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
-                </label>
-                {{ form_usuario.secretaria}}
-                {{form_usuario.rol.errors}}
+                <div class="row">
+                    <div class="col-8">
+                        <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
+                        </label>
+                        {{ form_usuario.secretaria}}
+                        {{form_usuario.rol.errors}}
+                    </div>
+                    <div class="col-4 mt-4">
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                            data-target="#exampleModal">
+                            +
+                        </button>
+                    </div>
+
+                </div>
                 <label for="{{ form_usuario.encargado_unidad.id_for_label }}"> {{form_usuario.encargado_unidad.label}}:
                 </label>
                 {{ form_usuario.encargado_unidad}}
@@ -68,5 +90,60 @@
 
 
 </div>
+
+<!--modal secretaria-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Añadir Secretaria</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'crear_secretaria' %}" method="post">
+                    {% csrf_token %}
+                    <label for="secretaria">Secretaria nombre</label>
+                    <input class="form-control" type="text" id="servidor">
+                    <div class="mt-2 text-center">
+                        <button class="btn btn-success btn-sm" id="submitBtnSecreataria" type="submit">Guardar</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--fin modal secretaria-->
+
+
+<!--modal roles-->
+<div class="modal fade" id="rolesMolal" tabindex="-1" role="dialog" aria-labelledby="rolesMolal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Añadir Roles</h5>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <label for="">Categoria nombre</label>
+                    <input type="text">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success btn-sm" id="submitBtn" type="submit">Guardar</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--fin modal roles-->
+
+<script>
+    document.getElementById('submitBtnSecreataria').addEventListener('click', () => {
+        console.log("hola secretaria");
+    })
+</script>
 
 {% endblock index %}

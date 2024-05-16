@@ -1,13 +1,10 @@
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, logout, login
-from django.contrib import messages
 from django.urls import reverse
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
 from .forms import Usuario_formulario
-from django.db import transaction
-from ..persona.models import Persona 
-from .models import Usuario,Secretaria
+
+from .models import Usuario
+from django.http import JsonResponse
 
 from almacenes.persona.forms import formulario_persona
 
@@ -17,7 +14,6 @@ from almacenes.utils.paginador import paginador_general
 
 def login_sistema(request):
     if(request.method=='POST'):
-        print("hola soy el post")
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
@@ -51,6 +47,15 @@ def creando_usuario(request):
              'form_persona':formulario_p,
              }
     return render(request, 'usuarios/crear_cuenta_formulario.html', context)
+
+
+def crear_secretaria(request):
+    if(request.method == 'POST'):
+        print("hola")
+        return JsonResponse({"data":True})
+    else:
+        return redirect('creando_usuarios')
+
 
 def listando_usuarios(request):
     listado_cuentas_usuarios = Usuario.objects.select_related('persona').all()
