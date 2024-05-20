@@ -37,50 +37,33 @@
                 {{ form_usuario.confirmar_password }}
                 {{form_usuario.confirmar_password.errors}}
 
-                <div class="row">
-                    <div class="col-8">
-                        <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.rol.label}}:
-                        </label>
-                        {{ form_usuario.rol }}
-                        {{form_usuario.rol.errors}}
-                    </div>
-                    <div class="col-4 mt-4">
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                            data-target="#rolesMolal">
-                            +
-                        </button>
-                    </div>
 
-                </div>
+
+                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.area_trabajo.label}}:
+                </label>
+                {{ form_usuario.area_trabajo }}
+                {{form_usuario.area_trabajo.errors}}
+
+                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.rol.label}}:
+                </label>
+                {{ form_usuario.rol }}
+                {{form_usuario.rol.errors}}
+
+                <label for="{{ form_usuario.encargado_unidad.id_for_label }}"> {{form_usuario.encargado_unidad.label}}:
+                </label>
+                {{ form_usuario.encargado_unidad}}
+                {{form_usuario.encargado_unidad.errors}}
+                <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
+                </label>
+                {{ form_usuario.secretaria}}
+                {{form_usuario.secretaria.errors}}
+
                 <label for="{{ form_usuario.encargado_secretaria.id_for_label }}">
                     {{form_usuario.encargado_secretaria.label}}:
                 </label>
                 {{ form_usuario.encargado_secretaria}}
                 {{form_usuario.encargado_secretaria.errors}}
-
-
-                <div class="row">
-                    <div class="col-8">
-                        <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
-                        </label>
-                        {{ form_usuario.secretaria}}
-                        {{form_usuario.rol.errors}}
-                    </div>
-                    <div class="col-4 mt-4">
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                            data-target="#exampleModal">
-                            +
-                        </button>
-                    </div>
-
-                </div>
-                <label for="{{ form_usuario.encargado_unidad.id_for_label }}"> {{form_usuario.encargado_unidad.label}}:
-                </label>
-                {{ form_usuario.encargado_unidad}}
-                {{form_usuario.encargado_unidad.errors}}
             </div>
-
-
         </div>
         <div class="text-center mt-3">
             <button class="btn btn-success" type="submit">Guardar</button>
@@ -91,31 +74,7 @@
 
 </div>
 
-<!--modal secretaria-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Añadir Secretaria</h5>
-            </div>
-            <div class="modal-body">
-                <form action="{% url 'crear_secretaria' %}" method="post">
-                    {% csrf_token %}
-                    <label for="secretaria">Secretaria nombre</label>
-                    <input class="form-control" type="text" id="servidor">
-                    <div class="mt-2 text-center">
-                        <button class="btn btn-success btn-sm" id="submitBtnSecreataria" type="submit">Guardar</button>
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
-                    </div>
 
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!--fin modal secretaria-->
 
 
 <!--modal roles-->

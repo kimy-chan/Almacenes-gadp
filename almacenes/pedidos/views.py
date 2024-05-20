@@ -71,7 +71,6 @@ def listar_pedidos(request):
     return render(request, 'pedidos/listar_pedido.html', context)
 
 def informacion_pedido(request, id_usuario):
-    print(id_usuario)
     datos_pedidos = Pedido.objects.select_related('usuario', 'producto').filter(usuario_id=id_usuario)
     datos_pedidos[0].usuario.persona.nombre
     for x in datos_pedidos:

@@ -1,12 +1,13 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, logout, login
+from django.db import IntegrityError
 from django.urls import reverse
 from .forms import Usuario_formulario
 
-from .models import Usuario
+from .models import Usuario, Secretaria, Area_trabajo
 from django.http import JsonResponse
 
-from almacenes.persona.forms import formulario_persona
+from almacenes.persona.forms import formulario_persona 
 
 from almacenes.utils.paginador import paginador_general
 
@@ -49,19 +50,44 @@ def creando_usuario(request):
     return render(request, 'usuarios/crear_cuenta_formulario.html', context)
 
 
-def crear_secretaria(request):
+def crear_secretaria_listar(request):
     if(request.method == 'POST'):
-        print("hola")
-        return JsonResponse({"data":True})
+        secretaria_post = request.POST.get('secretaria','').strip() 
+        if not secretaria_post:
+             return JsonResponse({"error":'este campo es obligatorio'})
+        try:
+            secretaria = Secretaria(secretaria=secretaria_post)
+            secretaria.save()
+            return JsonResponse({"data": True})
+        except IntegrityError:
+            return JsonResponse({"error": "El valor  ya existe"})
+
     else:
-        return redirect('creando_usuarios')
+        secretatias = list(Secretaria.objects.all().values())   
+        return JsonResponse({'data':secretatias}, safe=False)
 
-
+def crear_aras_trabajo_listar(request):
+    if(request.method == 'POST'):
+        try:
+            nombre_area= request.POST['nombre_area']
+            if not nombre_area:
+                return JsonResponse({'error':'Este campo es obligatorio'})
+            nombre_area= Area_trabajo(nombre_area= nombre_area)
+            nombre_area.save()
+            return JsonResponse({'data':True})
+        except IntegrityError:
+            return JsonResponse({"error": "El valor  ya existe"})
+    else:
+        area_trabajo = list(Area_trabajo.objects.all().values())
+        return JsonResponse({'data':area_trabajo})
+    
 def listando_usuarios(request):
     listado_cuentas_usuarios = Usuario.objects.select_related('persona').all()
+
     listado_cuentas_usuarios = paginador_general(request, listado_cuentas_usuarios)
     context={
-        'data':listado_cuentas_usuarios
+        'data':listado_cuentas_usuarios,
+       
     }
     return render(request, 'usuarios/mostrar_cuentas.html', context)
 

@@ -23,7 +23,7 @@ class Materiales(models.Model):
     color = models.CharField(max_length=100,blank=True, null=True)
     unidad_medida = models.CharField(max_length=255,blank=True, null=True, verbose_name='Unidad de medida')
     material = models.CharField(max_length=255,blank=True, null=True)
-    numero_serie = models.CharField(max_length=255, unique=True, blank=True, null=True,  error_messages={'unique':'El numero de serie de producto ya existe'}, verbose_name='Numero de serie')
+    codigo_paquete = models.CharField(max_length=255, unique=True, blank=True, null=True,  error_messages={'unique':'El codigo ya existe'}, verbose_name='Codigo de paquete')
     categoria =models.ForeignKey(Categoria, models.CASCADE,blank=False, null=False )
 
     def __str__(self) -> str:
