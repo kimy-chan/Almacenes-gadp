@@ -3,9 +3,9 @@
 {% block index %}
 
 
-<h2>Añadir material</h2>
+<h2>Actualizar material</h2>
 <div class="container">
-    <form action="{%url 'crear_producto' %}" method="POST">
+    <form action="{%url 'editar_material' material.id %}" method="POST">
         {% csrf_token %}
         <div class="row">
             {%for field in form %}

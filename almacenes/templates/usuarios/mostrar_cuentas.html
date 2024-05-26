@@ -27,7 +27,6 @@
                 <th scope="col">C.I</th>
                 <th scope="col">Usuario</th>
                 <th scope="col">Rol</th>
-                <th scope="col">Estado</th>
                 <th scope="col">Accion</th>
             </tr>
         </thead>
@@ -38,9 +37,19 @@
                 <td>{{cuentas.persona.cedula_identidad}}</td>
                 <td>{{cuentas.username}}</td>
                 <td>{{cuentas.rol}}</td>
-                <td>{{cuentas.is_staff}}</td>
 
-                <td>edita| eliminar</td>
+
+                <td>
+                    <a class="btn btn-secondary btn-sm"
+                        href="{% url 'actulizar_cuenta_usuario' cuentas.id cuentas.persona.id  %}">Editar</a>
+                    <a class="btn btn-danger btn-sm" href="{% url 'eliminar_cuenta' cuentas.id %}">eliminar</a>
+                    {%if cuentas.es_activo %}
+                    <a class="btn btn-warning btn-sm" href="{% url 'desactivar_cuenta' cuentas.id %}">Desactivar</a>
+                    {%else%}
+                    <a class="btn btn-success btn-sm" href="{% url 'activar_cuenta' cuentas.id %}">Activar</a>
+                    {% endif %}
+
+                </td>
 
             </tr>
             {% endfor %}

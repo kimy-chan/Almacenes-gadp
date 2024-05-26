@@ -5,9 +5,9 @@
 
 <div class="container">
     <div class="text-center">
-        <h2>Añadir usuarios</h2>
+        <h2>Actulizar cuenta</h2>
     </div>
-    <form action="{% url 'creando_usuarios' %}" method="POST">
+    <form action="{% url 'actulizar_cuenta_usuario' usuario.id persona.id %}" method="POST">
         {% csrf_token %}
         <div class="row">
             <div class="col-6">

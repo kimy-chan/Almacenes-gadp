@@ -1,8 +1,12 @@
 
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from .forms import Formulario_categoria,Formulario_materiales
 from django.http import JsonResponse
+from django.http import HttpResponse
+
+
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 
 from .models import Categoria, Materiales
@@ -48,8 +52,8 @@ def crear_material(request):
 
 
 def listado_material(request, id_categoria):#lista todos los material por categoria
-    listar_productos_categoria= Materiales.objects.select_related('categoria').filter(categoria_id=id_categoria)
-    nombre_categoria = Categoria.objects.get(pk=id_categoria)
+    listar_productos_categoria= Materiales.objects.select_related('categoria').filter(categoria_id=id_categoria,es_habilitado=True)
+    nombre_categoria = Categoria.objects.get(pk=id_categoria)#trae el nombre de la categoria para el sud titulo
     context={
         'data':listar_productos_categoria,
         'nombre_categoria':nombre_categoria
@@ -62,3 +66,42 @@ def informacion_material(request, id_material):
         'material':info_producto
     }
     return render(request, 'materiales/informacion_material.html', context)
+
+def editar_material(request, id_material):
+    material = get_object_or_404(Materiales, pk=id_material)
+    formulario_material = Formulario_materiales(request.POST or None, instance= material)
+    if request.method == 'POST':
+        if formulario_material.is_valid():
+            material= formulario_material.save()
+            material.calcular_total_paquetes()
+            material.calcular_precio_total()
+            return HttpResponse('actulizado')
+    
+    context={
+        'form':formulario_material,
+        'material': material
+
+    }
+    return render(request, 'materiales/formulario.actulizar.material.html', context)
+
+def softDelete(request, id_material, id_categoria): #elimina el material
+    material = get_object_or_404(Materiales, pk= id_material)
+    categoria = get_object_or_404(Categoria, pk= id_categoria)
+    material.es_habilitado= False
+    material.save()
+    return  redirect("categorias_por_id", id_categoria=categoria.id)
+
+
+
+def inprimir(request, id):
+    ruta_tamplate ='materiales/informacion_material.html'
+    template = get_template(ruta_tamplate)
+    mate = get_object_or_404(Materiales, pk=id)
+    context = {'material': mate}
+    html = template.render(context)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    return response

@@ -28,7 +28,14 @@ class Usuario_formulario(forms.ModelForm):
         self.fields['area_trabajo'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre_area) for rol in Area_trabajo.objects.all()])
         self.fields['area_trabajo'].label='Seleccione su area de trabajo'
         
-
+    def save(self, commit=True):
+        user = super(Usuario_formulario, self).save(commit=False)
+        password = self.cleaned_data.get('password')
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user
 
     def clean(self):
         clean_data= super().clean()

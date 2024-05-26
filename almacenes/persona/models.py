@@ -1,7 +1,4 @@
 from django.db import models
-from django.utils import timezone
-
-
 class Persona(models.Model):
     cedula_identidad= models.CharField(max_length=20 ,blank=False, null=False, unique=True , error_messages={'unique':'Ya existe la cedula de identidad registrada'})
     nombre = models.CharField(max_length=50, blank=False, null=False)

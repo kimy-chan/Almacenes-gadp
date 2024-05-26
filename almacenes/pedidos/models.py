@@ -30,6 +30,7 @@ class Pedido(models.Model):
     material= models.ForeignKey(Materiales, on_delete=models.CASCADE,  blank= False, null=False)
     fecha_pedido= models.DateTimeField(auto_now_add=True, blank=False, null=False)
     fecha_entrega_salida= models.DateTimeField(blank=True, null=True)
+    es_habilitado=models.BooleanField(default=True)
     
     def __str__(self) -> str:
         return f"Descripción: {self.descripcion}, Unidad de manejo: {self.unidad_manejo}, Cantidad pedido: {self.cantidad_pedido}, Cantidad entrega almacen: {self.cantidad_entrega_almacen}, Partida presupuestada: {self.partida_presupuestada}, Estado de autorización: {self.estado_autorizacion}, Estado del pedido: {self.estado_pedido}, Usuario: {self.usuario}, Producto: {self.material}, Fecha de pedido: {self.fecha_pedido}"

@@ -15,10 +15,10 @@ def index(request):
         id_categoria = request.POST.get('categoria_id')
         if not id_categoria:
             return redirect('index')
-        productos_categoria= Materiales.objects.select_related('categoria').filter(categoria_id=id_categoria)
+        productos_categoria= Materiales.objects.select_related('categoria').filter(categoria_id=id_categoria, es_habilitado=True)
         productos_categoria= paginador_general(request,productos_categoria)
     else:
-        productos_categoria= Materiales.objects.select_related('categoria').all()
+        productos_categoria= Materiales.objects.select_related('categoria').filter(es_habilitado=True)
         productos_categoria= paginador_general(request, productos_categoria)
     context ={
             'data':productos_categoria,
@@ -30,7 +30,7 @@ def index(request):
 
 def buscador(request):
     data_buscador = request.GET.get('buscador','')
-    producto  = Materiales.objects.select_related('categoria').filter(Q(nombre__icontains=data_buscador) | Q(codigo__icontains=data_buscador) |  Q(marca__icontains=data_buscador))
+    producto  = Materiales.objects.select_related('categoria').filter(Q(nombre__icontains=data_buscador) | Q(codigo__icontains=data_buscador) |  Q(marca__icontains=data_buscador), es_habilitado= True)
     producto = paginador_general(request, producto)
     context={
         'data':producto

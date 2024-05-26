@@ -8,11 +8,14 @@ def listado_categorias_sidebar(request):
 
 def user_datos(request):
     if request.user.is_authenticated:
+ 
         usuario_id = request.user.id 
         try:
-            usuario = Usuario.objects.select_related('persona','rol').get(pk=usuario_id)
+            usuario = Usuario.objects.select_related('persona','area_trabajo').get(pk=usuario_id)
+            print(usuario)
             return {'usuario':usuario}
-        except:
-             return {'usuario':None}
+        except Exception as e:
+            print(e)
+            return {'usuario':None}
     else:
         return {'usuario':None}
