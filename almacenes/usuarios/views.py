@@ -21,8 +21,12 @@ def login_sistema(request):
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
         if user is not None and user.es_activo and user.es_habilitado:
-            login(request, user)
-            return redirect('index')
+            if(user.area_trabajo.nombre_area == 'Almacen'):
+                login(request, user)
+                return redirect('administracion')
+            else:
+                login(request, user)
+                return redirect('index')
         else:
             return render(request, 'usuarios/login.html', {'error_message': 'Credenciales inválidas'})
     else:

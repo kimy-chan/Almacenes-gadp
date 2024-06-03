@@ -16,7 +16,8 @@
 
                 <th>fecha de pedido</th>
                 <th>fecha de Autorizacion</th>
-                <th>Autorizar</th>
+                <th>Secretaria</th>
+                <th>Unidad</th>
 
             </tr>
         </thead>
@@ -33,27 +34,37 @@
                 <td>{{ pedido.fecha_pedido|date:"m/d/y" }}</td>
 
                 <td>{% if pedido.fecha_de_autorizacion %}
-                    {{pedido.fecha_de_autorizacion|date:"m/d/y"}}
+                    {{pedido.fecha_de_autorizacion|date:"m/d/Y H:i:s"}}
                     {% endif %}
                 </td>
                 <td>
 
-                    {% if pedido.estado_pedido_unidad_mayor_rechazar %}<!--Estado de rechazo-->
+                    {% if pedido.estado_pedido %}<!--Estado de rechazo-->
                     <button class="btn btn-danger btn-sm" disabled="disabled">rechazado</button>
-                    {% elif pedido.estado_pedido_unidad_mayor %}
+                    {% elif pedido.estado_autorizacion_unidad %}
                     <button class="btn btn-success btn-sm" disabled="disabled">Autorizado</button>
                     {% else %}
                     <div class="row">
-                        <div class="col-6"><a href="{%url 'autorizar_pedidos_unidad_mayor' pedido.id %}"
+                        <div class="col-6"><a href="{%url 'autorizar_pedido' pedido.id %}"
                                 class="btn btn-success btn-sm">Autorizar</a>
                         </div>
-                        <div class="col-6"><a href="{%url 'rechazar_pedidos_unidad_mayor' pedido.id %}"
+                        <div class="col-6"><a href="{%url 'rechazar_pedido' pedido.id %}"
                                 class="btn btn-danger btn-sm">rechazar</a></div>
                     </div>
                     {% endif %}
                 </td>
-                <th>
-                    {% endfor %}
+                <td>
+                    {% if pedido.estado_pedido_unidad_mayor_rechazar %}
+                    <button class="btn btn-danger btn-sm" disabled="disabled">Rechazado</button>
+                    {% elif pedido.estado_pedido_unidad_mayor %}
+                    <button class="btn btn-success btn-sm" disabled="disabled">Autorizado</button>
+                    {% else %}
+                    <button class="btn btn-danger btn-sm" disabled="disabled">No Autorizado</button>
+                    {% endif %}
+                </td>
+
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
     {% include 'paginador/paginador.html' %}

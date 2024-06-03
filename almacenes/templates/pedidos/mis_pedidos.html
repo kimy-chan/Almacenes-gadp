@@ -28,20 +28,23 @@
                 <td>{{ pedido.material.codigo }}</td>
                 <td>{{ pedido.material.nombre }}</td>
                 <td>{{ pedido.descripcion }}</td>
-                <td>{{ pedido.cantidad_pedido }}</td>
-                <td>{{ pedido.cantidad_entrega_almacen }}</td>
-                <td> {%if pedido.estado_autorizacion in 'No autorizado' %}
-                    <button disabled="disabled" class="btn btn-danger btn-sm">{{pedido.estado_autorizacion}}</button>
+                <td>{{ pedido.cantidad_pedida }}</td>
+                <td>{{ pedido.cantidad_entrega }}</td>
+                <td>
+                    {% if pedido.estado_pedido == False %} <!--Estado de rechazo-->
+                    {%if pedido.estado_autorizacion_unidad%}
+                    <button disabled="disabled" class="btn btn-success btn-sm">Autorizado</button>
                     {% else %}
-                    <button disabled="disabled" class="btn btn-success btn-sm">{{pedido.estado_autorizacion}}</button>
+                    <button disabled="disabled" class="btn btn-danger btn-sm">No Autorizado</button>
+                    {% endif %}
+                    {% else %}
+                    <button disabled="disabled" class="btn btn-danger btn-sm">Rechazado</button>
                     {% endif %}
                 </td>
-                <td>{{ pedido.fecha_pedido }}</td>
-
+                <td>{{ pedido.fecha_pedido|date:"m/d/y" }}</td>
                 <td>
-
-                <th> {%if pedido.estado_autorizacion in 'No autorizado' %}
-                    <a href="" class='btn btn-danger btn-sm'>Cancelar</a>
+                <th> {%if pedido.estado_pedido%}
+                    <a href="{% url 'eliminar_mi_pedido' pedido.id %}" class='btn btn-danger btn-sm'>Cancelar</a>
                     {% endif %}
 
                 </th>
@@ -49,7 +52,9 @@
             </tr>
             {% endfor %}
         </tbody>
+
     </table>
+    {% include 'paginador/paginador.html' %}
 </div>
 
 {%endblock usuario %}

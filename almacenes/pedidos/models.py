@@ -15,9 +15,12 @@ class Pedido(models.Model):
     partida_presupuestada=models.DecimalField(max_digits=10, decimal_places=2,blank= True ,null= True)
     costo_unidad=models.DecimalField(max_digits=10, decimal_places=2,blank= True ,null= True)
     costo_total=models.DecimalField(max_digits=10, decimal_places=2,blank= True ,null= True)
-    estado_autorizacion_unidad = models.BooleanField( blank=True, null=True, default=False)
-    estado_autorizacion_unidad_mayor = models.BooleanField( blank=True, null=True, default=False)
+    estado_autorizacion_unidad = models.BooleanField( blank=True, null=True, default=False)#estado de secretaria
+    estado_pedido= models.BooleanField( blank=True, null=True, default=False)
+    estado_pedido_unidad_mayor= models.BooleanField( blank=True, null=True, default=False)
+    estado_pedido_unidad_mayor_rechazar= models.BooleanField( blank=True, null=True, default=False)
     estado_autorizacion_director_administrativo = models.BooleanField( blank=True, null=True, default=False)
+    estado_autorizacion_presupuestada = models.BooleanField( blank=True, null=True, default=False)
     estado_pedido_almacen = models.CharField(choices=ESTADO_PEDIDO_CHOICES, default='Pendiente')
     programa= models.DecimalField(max_digits=10, decimal_places=2,blank= True ,null= True)
     sub_programa=models.DecimalField(max_digits=10, decimal_places=2,blank= True ,null= True)
@@ -30,10 +33,11 @@ class Pedido(models.Model):
     material= models.ForeignKey(Materiales, on_delete=models.CASCADE,  blank= False, null=False)
     fecha_pedido= models.DateTimeField(auto_now_add=True, blank=False, null=False)
     fecha_entrega_salida= models.DateTimeField(blank=True, null=True)
-    es_habilitado=models.BooleanField(default=True)
+    fecha_de_autorizacion= models.DateTimeField(blank=True, null=True)
+   
     
     def __str__(self) -> str:
-        return f"Descripción: {self.descripcion}, Unidad de manejo: {self.unidad_manejo}, Cantidad pedido: {self.cantidad_pedido}, Cantidad entrega almacen: {self.cantidad_entrega_almacen}, Partida presupuestada: {self.partida_presupuestada}, Estado de autorización: {self.estado_autorizacion}, Estado del pedido: {self.estado_pedido}, Usuario: {self.usuario}, Producto: {self.material}, Fecha de pedido: {self.fecha_pedido}"
+        return f"Descripción: {self.descripcion}, Unidad de manejo: {self.unidad_manejo}, Cantidad pedido: {self.cantidad_pedida}, Cantidad entrega almacen: {self.cantidad_entrega}, Partida presupuestada: {self.partida_presupuestada}, Estado de autorización: {self.estado_autorizacion_unidad}, Estado del pedido: {self.estado_pedido}, Usuario: {self.usuario}, Producto: {self.material}, Fecha de pedido: {self.fecha_pedido}"
     def fecha_entrega_pedido(self):
         self.fecha_entrega_pedido= self.fecha_entrega_pedido(auto_now_add=True)
         self.save()

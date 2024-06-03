@@ -12,7 +12,6 @@ def user_datos(request):
         usuario_id = request.user.id 
         try:
             usuario = Usuario.objects.select_related('persona','area_trabajo').get(pk=usuario_id)
-            print(usuario)
             return {'usuario':usuario}
         except Exception as e:
             print(e)
