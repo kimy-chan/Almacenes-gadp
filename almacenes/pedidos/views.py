@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import   login_required
 from .forms import Formualrio_pedido
@@ -8,7 +9,7 @@ from almacenes.usuarios.models import Usuario
 from almacenes.utils.paginador import paginador_general
 from datetime import datetime
 
-from .models import Pedido
+from .models import Pedido, Autorizacion_pedido
 
 def index(request):
     if (request.method == 'POST'):
@@ -82,13 +83,30 @@ def informacion_pedido(request, id_usuario):
 
 def mis_pedidos(request): #muestra los pedidos de cada unidad o secretaria
     id_usuario= request.user.id
-    pedidos= Pedido.objects.select_related('usuario', 'material').filter(usuario_id=id_usuario).order_by('-fecha_pedido')
+    pedidos= Pedido.objects.select_related('usuario').filter(usuario_id=id_usuario).order_by('-fecha_pedido')   
     pedidos= paginador_general(request, pedidos)
     context={
         'data':pedidos,
         'title':'Mis pedidos'
     }
     return render(request, 'pedidos/mis_pedidos.html', context)
+
+def mostrar_informacion_pedidio_aprobaciones(request,id_pedido):
+    if request.method == 'GET':
+        data=[]
+        pedido = get_object_or_404(Pedido, pk=id_pedido)
+        aprobaciones = Autorizacion_pedido.objects.filter(pedido= pedido.id)
+        for aprobacion in aprobaciones:
+            print(aprobacion)
+            informacion ={
+            'secretaria':aprobacion.usuario.secretaria.secretaria,
+            'aprobacion':aprobacion.estado_autorizacion,
+            'nombre':aprobacion.usuario.persona.nombre + " " + aprobacion.usuario.persona.apellidos ,
+            'area':aprobacion.usuario.area_trabajo.nombre_area,
+            }
+            data.append(informacion)
+             
+        return JsonResponse({'data':data})
 
 def eliminar_mi_pedido(request, id_pedido):
     pedido= get_object_or_404(Pedido, pk=id_pedido)
@@ -119,12 +137,12 @@ def listar_pedidos_unidad(request, id_usuario): #esta suelto no esta en uso
     return render(request, 'pedidos/listar_pedidos_unidad.html',context)
     
     
-def autorizar_pedidos(request, id_pedido):
+def autorizar_pedidos(request, id_pedido):#autoria el pedido de cada secretaria
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
-    pedido.estado_autorizacion_unidad= True
-    pedido.fecha_de_autorizacion= datetime.now()
-    pedido.save()
+    usuario = get_object_or_404(Usuario, pk= id_usuario)
+    autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
+    autorizacion_pedido.save()
     return  redirect('listar_pedidos_secretarias', id_usuario)
 
 def autorizar_pedidos_unidad_mayor(request, id_pedido):
@@ -138,8 +156,9 @@ def autorizar_pedidos_unidad_mayor(request, id_pedido):
 def rechazar_pedido(request, id_pedido):
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
-    pedido.estado_pedido= True
-    pedido.save()
+    usuario = get_object_or_404(Usuario, pk= id_usuario)
+    autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= False)
+    autorizacion_pedido.save()
     return  redirect('listar_pedidos_secretarias', id_usuario)
 
 def rechazar_pedido_unidad_mayor(request, id_pedido):

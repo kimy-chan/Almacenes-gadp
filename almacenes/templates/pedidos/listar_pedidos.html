@@ -53,16 +53,6 @@
                     </div>
                     {% endif %}
                 </td>
-                <td>
-                    {% if pedido.estado_pedido_unidad_mayor_rechazar %}
-                    <button class="btn btn-danger btn-sm" disabled="disabled">Rechazado</button>
-                    {% elif pedido.estado_pedido_unidad_mayor %}
-                    <button class="btn btn-success btn-sm" disabled="disabled">Autorizado</button>
-                    {% else %}
-                    <button class="btn btn-danger btn-sm" disabled="disabled">No Autorizado</button>
-                    {% endif %}
-                </td>
-
                 {% endfor %}
             </tr>
         </tbody>

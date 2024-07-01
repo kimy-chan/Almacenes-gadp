@@ -8,7 +8,7 @@ class Usuario_formulario(forms.ModelForm):
     
     class Meta:
         model=Usuario
-        fields=['username','password','confirmar_password','email','encargado_secretaria', 'item', 'area_trabajo','rol','secretaria','encargado_unidad']
+        fields=['username','password','confirmar_password','email','encargado_secretaria', 'item', 'area_trabajo','rol','secretaria','encargado_unidad','pedidos_general']
         widgets={
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -16,7 +16,8 @@ class Usuario_formulario(forms.ModelForm):
             'item': forms.TextInput(attrs={'class': 'form-control'}),
             'confirmar_password':forms.PasswordInput(attrs={'class': 'form-control'}),
             'encargado_unidad':forms.Select(attrs={'class': 'form-control'}),
-             'encargado_secretaria':forms.Select(attrs={'class': 'form-control'}),
+            'encargado_secretaria':forms.Select(attrs={'class': 'form-control'}),
+            'pedidos_general': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
 
         }
         

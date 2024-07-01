@@ -63,6 +63,14 @@
                 </label>
                 {{ form_usuario.encargado_secretaria}}
                 {{form_usuario.encargado_secretaria.errors}}
+
+                <span>Marque esta opción para que a esta cuenta le lleguen todos los pedidos en general</span>
+                <br>
+                <label for="{{ form_usuario.encargado_secretaria.id_for_label }}">
+                    {{form_usuario.pedidos_general.label}}:
+                </label>
+                {{ form_usuario.pedidos_general}}
+                {{form_usuario.pedidos_general.errors}}
             </div>
         </div>
         <div class="text-center mt-3">

@@ -20,7 +20,6 @@ class Secretaria(models.Model):
         return f"{self.secretaria}"
     
 
-
     
 class Area_trabajo(models.Model):
     PERMISOS_CHOICES=[
@@ -47,11 +46,12 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     email=models.EmailField(max_length=255, blank=True, null=True)
     item = models.CharField(max_length=100, blank=True, null=True)
     is_staff= models.CharField(default=True)#desactivar usuario
-    area_trabajo = models.ForeignKey(Area_trabajo, blank=False, null=False, on_delete=models.CASCADE)
+    area_trabajo = models.ForeignKey(Area_trabajo, blank=False, null=False, on_delete=models.RESTRICT)
     encargado_secretaria=models.CharField( blank=False, null=False, choices=ENCARGADO, default='Personal', verbose_name='Jefe  de la secretaria' ) 
     encargado_unidad= models.CharField( blank=False, null=False, choices=ENCARGADO, default='Personal' ,verbose_name='Jefe de la unidad' )
-    secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE, blank=False, null=True)
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE) 
+    secretaria = models.ForeignKey(Secretaria, on_delete=models.RESTRICT, blank=False, null=True)
+    persona = models.ForeignKey(Persona, on_delete=models.RESTRICT)
+    pedidos_general=models.BooleanField(default=False)#usuarios que le llegara todos los pedidos aprobados ´por sus jefes de secretaria
     es_habilitado=models.BooleanField(default=True)
     es_activo=models.BooleanField(default=True)
     
