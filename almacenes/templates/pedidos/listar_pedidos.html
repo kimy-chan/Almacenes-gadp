@@ -1,5 +1,5 @@
 {% extends '../base.usuarios.html' %}
-
+{% load static %}
 {% block usuario %}
 
 
@@ -16,9 +16,7 @@
 
                 <th>fecha de pedido</th>
                 <th>fecha de Autorizacion</th>
-                <th>Secretaria</th>
-                <th>Unidad</th>
-
+                <th>Accion</th>
             </tr>
         </thead>
         <tbody>
@@ -62,3 +60,11 @@
 </div>
 
 {% endblock usuario %}
+
+{% block js %}
+
+<script src="{% static 'js/alertas.js' %}">
+
+</script>
+
+{% endblock js %}

@@ -1,3 +1,4 @@
+from typing import Any
 from django import forms
 from .models import Categoria, Materiales
 
@@ -24,8 +25,13 @@ class Formulario_materiales(forms.ModelForm):
         super(Formulario_materiales,self).__init__(*args, **kwargs)
         categorias_disponibles = [(categoria.id, categoria.nombre) for categoria in Categoria.objects.all()]#consultado a la base de datos     
         self.fields['categoria'].widget = forms.Select(choices=categorias_disponibles, attrs={'class': 'form-select'})
-        self.fields['categoria'].widget.attrs.update()
+        self.fields['categoria'].widget.attrs.update({'class': 'form-select'})
 
+        instance = kwargs.get('instance')
+        if instance:
+            # Establecer campos de solo lectura
+            self.fields['codigo'].widget.attrs['readonly'] = True
+            self.fields['codigo_paquete'].widget.attrs['readonly'] = True
 class Formulario_categoria(forms.ModelForm):
     class Meta:
         model=Categoria

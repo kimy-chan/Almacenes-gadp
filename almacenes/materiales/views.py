@@ -30,14 +30,18 @@ def crear_categoria(request):
     return render(request, 'materiales/categoria/formulario.crear.html', context)
 
 def crear_material(request):
-  
     if(request.method=='POST'):
         formulario= Formulario_materiales(request.POST)
         if(formulario.is_valid()):
+            codigo= formulario.cleaned_data['codigo']
+            codigo_paquete= formulario.cleaned_data['codigo_paquete']
+            categoria= formulario.cleaned_data['categoria']
             material= formulario.save()
+            material.codigo_paquete= f"{categoria.codigo_clasificacion}-{codigo_paquete }"
+            material.codigo=f"{material.codigo_paquete}-{codigo} "
+            material.save()
             material.calcular_total_paquetes()
             material.calcular_precio_total()
-
         else:
             formulario= Formulario_materiales(request.POST)
     else: 
@@ -69,7 +73,15 @@ def editar_material(request, id_material):
     formulario_material = Formulario_materiales(request.POST or None, instance= material)
     if request.method == 'POST':
         if formulario_material.is_valid():
+            codigo= formulario_material.cleaned_data['codigo']
+            codigo_paquete= formulario_material.cleaned_data['codigo_paquete']
+            antiguo_codigo_paquete=codigo_paquete.split('-')
+            codigo_antiguo=codigo.split('-')
+            categoria= formulario_material.cleaned_data['categoria']
             material= formulario_material.save()
+            material.codigo_paquete= f"{categoria.codigo_clasificacion}-{antiguo_codigo_paquete[1]}"
+            material.codigo=f"{material.codigo_paquete}-{codigo_antiguo[2]} "
+            material.save()
             material.calcular_total_paquetes()
             material.calcular_precio_total()
             return HttpResponse('actulizado')

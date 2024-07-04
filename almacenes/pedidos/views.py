@@ -7,6 +7,7 @@ from django.db.models import Q
 from almacenes.utils.paginador import paginador_general
 from almacenes.usuarios.models import Usuario
 from almacenes.utils.paginador import paginador_general
+from django.urls import reverse
 from datetime import datetime
 
 from .models import Pedido, Autorizacion_pedido
@@ -83,11 +84,11 @@ def informacion_pedido(request, id_usuario):
 
 def mis_pedidos(request): #muestra los pedidos de cada unidad o secretaria
     id_usuario= request.user.id
-    pedidos= Pedido.objects.select_related('usuario').filter(usuario_id=id_usuario).order_by('-fecha_pedido')   
+    pedidos= Pedido.objects.select_related('usuario').filter(usuario_id=id_usuario).order_by('-fecha_pedido')
     pedidos= paginador_general(request, pedidos)
     context={
         'data':pedidos,
-        'title':'Mis pedidos'
+        'title':'Mis pedidos'   
     }
     return render(request, 'pedidos/mis_pedidos.html', context)
 
@@ -97,21 +98,28 @@ def mostrar_informacion_pedidio_aprobaciones(request,id_pedido):
         pedido = get_object_or_404(Pedido, pk=id_pedido)
         aprobaciones = Autorizacion_pedido.objects.filter(pedido= pedido.id)
         for aprobacion in aprobaciones:
-            print(aprobacion)
+            
             informacion ={
             'secretaria':aprobacion.usuario.secretaria.secretaria,
             'aprobacion':aprobacion.estado_autorizacion,
             'nombre':aprobacion.usuario.persona.nombre + " " + aprobacion.usuario.persona.apellidos ,
             'area':aprobacion.usuario.area_trabajo.nombre_area,
+            #'fecha': aprobacion.fecha_de_autorizacion
             }
             data.append(informacion)
-             
+        print(data)
         return JsonResponse({'data':data})
 
 def eliminar_mi_pedido(request, id_pedido):
     pedido= get_object_or_404(Pedido, pk=id_pedido)
+    pedido_autorizado = Autorizacion_pedido.objects.filter(pedido=pedido)
+    for p in pedido_autorizado:
+        if p.estado_autorizacion == True:
+            return redirect(f"{reverse('mis_pedidos')}?error=Este pedido ha sido aprobado y no se puede cancelar")
+        continue
+
     pedido.delete()
-    return redirect('mis_pedidos')
+    return redirect(f"{reverse('mis_pedidos')}?success=Pedido cancelado correctamente")
 
 def todos_mis_pedidos(request):
     id_usuario= request.user.id
@@ -125,6 +133,7 @@ def todos_mis_pedidos(request):
 
 def listar_pedidos_unidad(request, id_usuario): #esta suelto no esta en uso
     usuario = get_object_or_404(Usuario, pk=id_usuario)
+    print(usuario)
     pedidos_unidad= Pedido.objects.select_related('usuario','material').filter(
         usuario__secretaria=usuario.secretaria.id
         ,estado_pedido=False, 
@@ -143,7 +152,8 @@ def autorizar_pedidos(request, id_pedido):#autoria el pedido de cada secretaria
     usuario = get_object_or_404(Usuario, pk= id_usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
     autorizacion_pedido.save()
-    return  redirect('listar_pedidos_secretarias', id_usuario)
+    return redirect(f"{reverse('listar_pedidos_secretarias', kwargs={'id_usuario': id_usuario})}?success=Pedido autorizado correctamente")
+
 
 def autorizar_pedidos_unidad_mayor(request, id_pedido):
     id_usuario= request.user.id
@@ -159,7 +169,8 @@ def rechazar_pedido(request, id_pedido):
     usuario = get_object_or_404(Usuario, pk= id_usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= False)
     autorizacion_pedido.save()
-    return  redirect('listar_pedidos_secretarias', id_usuario)
+    return redirect(f"{reverse('listar_pedidos_secretarias', kwargs={'id_usuario': id_usuario})}?pedido_rechazado=Pedido rechazado correctamente")
+    
 
 def rechazar_pedido_unidad_mayor(request, id_pedido):
     id_usuario= request.user.id

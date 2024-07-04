@@ -6,6 +6,9 @@
     <div class="text-center">
         <h2>{{ title}}</h2>
     </div>
+    <div>
+        {{ error }}
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -33,8 +36,7 @@
                 <td>
                     <button onclick="mostrar_aprobaciones_pedido('{{pedido.id}}')"
                         class='btn btn-success btn-sm'>Informacion</button>
-                    <a href="{% url 'eliminar_mi_pedido' pedido.id %}" class='btn btn-danger btn-sm'>Cancelar</>
-
+                    <a href="{%url 'eliminar_mi_pedido' pedido.id %}" class='btn btn-danger btn-sm'>Cancelar pedido</a>
                 </td>
             </tr>
             {% endfor %}
@@ -49,6 +51,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+
                 <h5 class="modal-title" id="infoModalLabel">Información del Pedido</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -61,6 +64,8 @@
                                 <th scope="col">Secretaria</th>
                                 <th scope="col">Cargo</th>
                                 <th scope="col">Estado</th>
+                                <th scope="col">Fecha de aprobacion</th>
+
                             </tr>
                         </thead>
                         <tbody id="tbody_table">
@@ -76,10 +81,20 @@
     </div>
 </div>
 
+
+
+
+
+
+
+
 {% endblock usuario %}
 
 {% block js %}
 
 <script src="{% static 'js/listar_aprobaciones.js' %}"></script>
+<script src="{% static 'js/alertas.js' %}">
+
+</script>
 
 {% endblock js %}
