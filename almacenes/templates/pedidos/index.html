@@ -21,39 +21,41 @@
         </div>
         <div class="col-sm-12 col-md-8">
             <div class="text-center">
-                <h3>Lista de materiales</h3>
+                <h3>Lista de {{categoria}}</h3>
             </div>
 
-            <table class="table mt-4">
-                <thead>
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Nombre</th>
-                        <th>Marca</th>
-                        <th>Disponible</th>
-                        <th>Acción</th> <!-- Corregido "Accion" a "Acción" -->
-                    </tr>
-                </thead>
-                <tbody>
-                    {%for producto in data %}
-                    <tr>
-                        <th> {{producto.codigo}}</th>
-                        <th> {{producto.nombre}}</th>
-                        <th> {{producto.marca}}</th>
-                        <th> {{producto.stock}}</th>
-                        <th><a class="btn btn-success btn-sm" href="{%url 'realizar_pedido' producto.id %}">Ordenar</a>
+            <div class="table-responsive mt-4">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Marca</th>
+                            <th>Disponible</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for material in data %}
+                        <tr>
+                            <td>{{ material.codigo }}</td>
+                            <td>{{ material.nombre }}</td>
+                            <td>{{ material.marca }}</td>
+                            <td>{{ material.stock }}</td>
+                            <td>
+                                <a href="{% url 'realizar_pedido' material.id %}"
+                                    class="btn btn-success btn-sm">Ordenar</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Lista de materiales vacía</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-                        </th>
-
-                    </tr>
-                    {% empty %}
-                    <div class="text-center">
-                        <h3> Lista de productos vacia </h3>
-                    </div>
-                    {% endfor%}
-
-                </tbody>
-            </table>
             {% include 'paginador/paginador.html' %}
         </div>
 

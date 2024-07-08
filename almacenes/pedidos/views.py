@@ -13,17 +13,26 @@ from datetime import datetime
 from .models import Pedido, Autorizacion_pedido
 
 def index(request):
+    nombre_categoria='materiales'
     if (request.method == 'POST'):
         id_categoria = request.POST.get('categoria_id')
         if not id_categoria:
             return redirect('index')
         productos_categoria= Materiales.objects.select_related('categoria').filter(categoria_id=id_categoria, es_habilitado=True)
         productos_categoria= paginador_general(request,productos_categoria)
+        if productos_categoria and productos_categoria[0].categoria.nombre:
+            nombre_categoria = productos_categoria[0].categoria.nombre
+        else:
+            nombre_categoria = 'materiales'
+
+
     else:
         productos_categoria= Materiales.objects.select_related('categoria').filter(es_habilitado=True)
         productos_categoria= paginador_general(request, productos_categoria)
+            
     context ={
             'data':productos_categoria,
+            'categoria':nombre_categoria
          
                 }
     return render(request, 'pedidos/index.html', context)
@@ -31,12 +40,13 @@ def index(request):
 
 
 def buscador(request):
+    nombre_categoria = 'materiales'
     data_buscador = request.GET.get('buscador','')
     producto  = Materiales.objects.select_related('categoria').filter(Q(nombre__icontains=data_buscador) | Q(codigo__icontains=data_buscador) |  Q(marca__icontains=data_buscador), es_habilitado= True)
     producto = paginador_general(request, producto)
     context={
-        'data':producto
-        
+        'data':producto,
+        'categoria':nombre_categoria
     }
     return  render(request, 'pedidos/index.html', context)
 
@@ -65,7 +75,7 @@ def realizar_pedido(request, id_material):
     return render(request , 'pedidos/realizar_pedido.html', context)
 
 def listar_pedidos(request):
-    listando_pedidos = Pedido.objects.select_related('usuario', 'producto').all().distinct('usuario')
+    listando_pedidos = Pedido.objects.select_related('usuario', 'material').all().distinct('usuario')
 
     context={
         'data':listando_pedidos
@@ -73,7 +83,7 @@ def listar_pedidos(request):
     return render(request, 'pedidos/listar_pedido.html', context)
 
 def informacion_pedido(request, id_usuario):
-    datos_pedidos = Pedido.objects.select_related('usuario', 'producto').filter(usuario_id=id_usuario)
+    datos_pedidos = Pedido.objects.select_related('usuario', 'material').filter(usuario_id=id_usuario)
     datos_pedidos[0].usuario.persona.nombre
     for x in datos_pedidos:
         print(x.descripcion)
