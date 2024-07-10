@@ -48,7 +48,16 @@
                 </label>
                 {{ form_usuario.rol }}
                 {{form_usuario.rol.errors}}
+                <div>
+                    <span>Seleccionar permisos solo para Almacen</span> <br>
+                    {{ form_usuario.crear.label}}
+                    {{ form_usuario.crear}}
+                    {{ form_usuario.editar.label}}
+                    {{ form_usuario.editar}}
+                    {{ form_usuario.eliminar.label}}
+                    {{ form_usuario.eliminar}}
 
+                </div>
                 <label for="{{ form_usuario.encargado_unidad.id_for_label }}"> {{form_usuario.encargado_unidad.label}}:
                 </label>
                 {{ form_usuario.encargado_unidad}}
@@ -72,11 +81,11 @@
                 {{ form_usuario.pedidos_general}}
                 {{form_usuario.pedidos_general.errors}}
             </div>
-        </div>
-        <div class="text-center mt-3">
-            <button class="btn btn-success" type="submit">Guardar</button>
 
-        </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-success" type="submit">Guardar</button>
+
+            </div>
     </form>
 
 

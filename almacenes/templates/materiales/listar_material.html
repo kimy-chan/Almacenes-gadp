@@ -25,9 +25,15 @@
                 <td class="small-text">{{ material.cantidad_paquete_unidad }}</td>
                 <td class="small-text">{{ material.stock }}</td>
                 <td>
+
+                    {% if usuario.editar %}
                     <a href="{% url 'editar_material' material.id %}" class="btn btn-secondary btn-sm">Editar</a>
+                    {% endif %}
+
+                    {% if usuario.eliminar %}
                     <a href="{% url 'eliminar' material.id material.categoria.id %}"
                         class="btn btn-danger btn-sm">Eliminar</a>
+                    {% endif %}
                     <a href="{% url 'informacion_material' material.id %}" class="btn btn-info btn-sm">Ver más</a>
                 </td>
             </tr>

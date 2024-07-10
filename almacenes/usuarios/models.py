@@ -22,15 +22,7 @@ class Secretaria(models.Model):
 
     
 class Area_trabajo(models.Model):
-    PERMISOS_CHOICES=[
-        ('Administrador','Administrador'),
-        ('Super_administrador','Super administrador'),
-        ('Personal','Personal')
-    ]
     nombre_area=models.CharField(max_length=100,blank=False, null=False, unique=True )
-    rol=models.CharField(blank=True , null=True , choices=PERMISOS_CHOICES , default='Personal')
-
-
     def __str__(self) -> str:
         return f"{self.nombre_area}"  
 
@@ -41,6 +33,12 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
         ('Encargado','Encargado'),
         ('Personal','Personal')
     ]
+    ROLES_CHOICES=[
+        ('Administrador','Administrador'),
+        ('Super_administrador','Super administrador'),
+        ('Axuliar','Axuliar'),
+        ('Personal','Personal')
+    ]
     username= models.CharField(max_length=150, unique=True, blank=False, null=False, verbose_name='Usuario')
     password = models.CharField(max_length=128, blank=False, null=False, verbose_name='Contraseña')
     email=models.EmailField(max_length=255, blank=True, null=True)
@@ -49,12 +47,16 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     area_trabajo = models.ForeignKey(Area_trabajo, blank=False, null=False, on_delete=models.RESTRICT)
     encargado_secretaria=models.CharField( blank=False, null=False, choices=ENCARGADO, default='Personal', verbose_name='Jefe  de la secretaria' ) 
     encargado_unidad= models.CharField( blank=False, null=False, choices=ENCARGADO, default='Personal' ,verbose_name='Jefe de la unidad' )
+    crear = models.BooleanField(default=False,verbose_name='Crear material')
+    editar= models.BooleanField(default=False,verbose_name='editar material')
+    eliminar=models.BooleanField(default=False,verbose_name='Eliminar material')
+    rol=models.CharField(max_length=250, choices=ROLES_CHOICES, default='Personal')
     secretaria = models.ForeignKey(Secretaria, on_delete=models.RESTRICT, blank=False, null=True)
     persona = models.ForeignKey(Persona, on_delete=models.RESTRICT)
     pedidos_general=models.BooleanField(default=False)#usuarios que le llegara todos los pedidos aprobados ´por sus jefes de secretaria
     es_habilitado=models.BooleanField(default=True)
     es_activo=models.BooleanField(default=True)
-    
+
     
     objects = UserManager()
     USERNAME_FIELD = 'username'
@@ -62,4 +64,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return f" Activo:{self.es_activo}"
 
-  
+
+
+    def __str__(self) -> str:
+        return f"{self.permiso}"

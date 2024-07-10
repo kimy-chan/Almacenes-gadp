@@ -108,10 +108,11 @@
                                         <div class="accordion-body">
                                             <ul class="collapse show nav flex-column ms-1" id="submenu1"
                                                 data-bs-parent="#menu">
+                                                {% if usuario.crear %}
                                                 <li class="list-group-item"><a href="{% url 'crear_material' %}"
                                                         class="nav-link">Nuevo
                                                         Material</a></li>
-
+                                                {% endif %}
                                                 {% for categoria in listado_categoria %}
                                                 <li class="list-group-item"><a
                                                         href="{% url 'categorias_por_id' categoria.id %}"
@@ -128,19 +129,19 @@
                                 <i class="bi-people"></i> <span class="ms-1 d-none d-sm-inline">Proveedores</span></a>
                         </li>
                         <li>
-                            <a href="/listando_pedidos " data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                            <a href="/listando_pedidos " class="nav-link px-0 align-middle ">
                                 <i class="bi-cart4"></i> <span class="ms-1 d-none d-sm-inline">Pedidos</span></a>
                         </li>
+
+                        {% if usuario.rol == "Almacen" or usuario.rol == "Axuliar" %}
+                        {% else %}
                         <li>
-                            <a href="/listando_usuarios" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <a href="/listando_usuarios" class="nav-link px-0 align-middle">
                                 <i class="bi-person"></i> <span class="ms-1 d-none d-sm-inline">Usuarios</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="bi-person-circle"></i> <span class="ms-1 d-none d-sm-inline">Clientes</span>
-                            </a>
-                        </li>
+                        {% endif %}
+
                         <li>
                             <a href="/logout" class="nav-link px-0 align-middle">
                                 <i class="bi-person-circle"></i> <span class="ms-1 d-none d-sm-inline">Salir</span>

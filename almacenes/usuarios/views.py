@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, logout, login
 from django.db import IntegrityError
 from .forms import Usuario_formulario
+from .models import Usuario
 
 
 
@@ -11,7 +12,7 @@ from django.http import JsonResponse
 from almacenes.persona.forms import Formulario_persona 
 
 from almacenes.utils.paginador import paginador_general
-from almacenes.persona.models import Persona
+from almacenes.persona.models import Persona 
 
 # Create your views here.
 
@@ -66,6 +67,7 @@ def creando_usuario(request):
             usuario.set_password(formulario_u.cleaned_data['password'])
             usuario.persona=persona
             usuario.save()
+          
         else:
             formulario_u= Usuario_formulario(request.POST)
             formulario_p = Formulario_persona(request.POST)

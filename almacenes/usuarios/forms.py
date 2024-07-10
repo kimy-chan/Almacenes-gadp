@@ -4,11 +4,10 @@ from .models import Secretaria,Usuario, Area_trabajo
 
 class Usuario_formulario(forms.ModelForm):
     confirmar_password= forms.CharField(label='confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}) )
-    rol = forms.ChoiceField(label='Seleccione su rol', choices=Area_trabajo.PERMISOS_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}), required=True)
     
     class Meta:
         model=Usuario
-        fields=['username','password','confirmar_password','email','encargado_secretaria', 'item', 'area_trabajo','rol','secretaria','encargado_unidad','pedidos_general']
+        fields=['username','password','confirmar_password','email','encargado_secretaria', 'item', 'area_trabajo','rol','crear','editar','eliminar','secretaria','encargado_unidad','pedidos_general']
         widgets={
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -17,8 +16,11 @@ class Usuario_formulario(forms.ModelForm):
             'confirmar_password':forms.PasswordInput(attrs={'class': 'form-control'}),
             'encargado_unidad':forms.Select(attrs={'class': 'form-control'}),
             'encargado_secretaria':forms.Select(attrs={'class': 'form-control'}),
-            'pedidos_general': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-
+            'crear': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+             'editar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+              'eliminar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+              'rol':forms.Select(attrs={'class': 'form-control'})
+             
         }
         
        
