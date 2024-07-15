@@ -12,7 +12,7 @@ document.getElementById('guardar_secretaria').addEventListener('click', (e) => {
             }
         })
         .catch((e) => {
-
+            alert('error de servidor')
         })
 })
 

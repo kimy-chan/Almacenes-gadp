@@ -39,10 +39,25 @@
 
 
 
-                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.area_trabajo.label}}:
+                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.area.label}}:
                 </label>
-                {{ form_usuario.area_trabajo }}
-                {{form_usuario.area_trabajo.errors}}
+                {{ form_usuario.area }}
+                {{form_usuario.area.errors}}
+
+                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.unidad.label}}:
+                </label>
+                {{ form_usuario.unidad }}
+                {{form_usuario.unidad.errors}}
+
+                <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.mango.label}}:
+                </label>
+                {{ form_usuario.mango }}
+                {{form_usuario.mango.errors}}
+
+                <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
+                </label>
+                {{ form_usuario.secretaria}}
+                {{form_usuario.secretaria.errors}}
 
                 <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.rol.label}}:
                 </label>
@@ -58,28 +73,19 @@
                     {{ form_usuario.eliminar}}
 
                 </div>
-                <label for="{{ form_usuario.encargado_unidad.id_for_label }}"> {{form_usuario.encargado_unidad.label}}:
+                <label for="{{ form_usuario.encargado_unidad.id_for_label }}"> {{form_usuario.encargado_unidad.label}}
                 </label>
                 {{ form_usuario.encargado_unidad}}
                 {{form_usuario.encargado_unidad.errors}}
-                <label for="{{ form_usuario.secretaria.id_for_label }}"> {{form_usuario.secretaria.label}}:
-                </label>
-                {{ form_usuario.secretaria}}
-                {{form_usuario.secretaria.errors}}
+
 
                 <label for="{{ form_usuario.encargado_secretaria.id_for_label }}">
-                    {{form_usuario.encargado_secretaria.label}}:
+                    {{form_usuario.encargado_secretaria.label}}
                 </label>
-                {{ form_usuario.encargado_secretaria}}
-                {{form_usuario.encargado_secretaria.errors}}
+                <span>Seleccione el cargo del grupo</span> <br>
+                {{ form_usuario.encargado}}
+                {{form_usuario.encargado.errors}}
 
-                <span>Marque esta opción para que a esta cuenta le lleguen todos los pedidos en general</span>
-                <br>
-                <label for="{{ form_usuario.encargado_secretaria.id_for_label }}">
-                    {{form_usuario.pedidos_general.label}}:
-                </label>
-                {{ form_usuario.pedidos_general}}
-                {{form_usuario.pedidos_general.errors}}
             </div>
 
             <div class="text-center mt-3">

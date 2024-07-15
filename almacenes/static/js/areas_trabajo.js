@@ -1,7 +1,7 @@
 
 document.getElementById('id_area_trabajo').addEventListener('click', (e) => {
     e.preventDefault()
-    formulario = document.getElementById('id_form_trabajo')
+    const formulario = document.getElementById('id_form_trabajo')
     axios.post('crear_aras_trabajo_listar', formulario)
         .then((resultado) => {
             if (resultado.data.error) {

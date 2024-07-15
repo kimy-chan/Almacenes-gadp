@@ -1,5 +1,5 @@
 from django import forms
-from .models import Secretaria,Usuario, Area_trabajo
+from .models import Secretaria,Usuario, Area,Unidad, Mango
 
 
 class Usuario_formulario(forms.ModelForm):
@@ -7,15 +7,14 @@ class Usuario_formulario(forms.ModelForm):
     
     class Meta:
         model=Usuario
-        fields=['username','password','confirmar_password','email','encargado_secretaria', 'item', 'area_trabajo','rol','crear','editar','eliminar','secretaria','encargado_unidad','pedidos_general']
+        fields=['username','password','mango','confirmar_password','email','encargado', 'item', 'area','rol','crear','editar','eliminar','secretaria','unidad']
         widgets={
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'item': forms.TextInput(attrs={'class': 'form-control'}),
             'confirmar_password':forms.PasswordInput(attrs={'class': 'form-control'}),
-            'encargado_unidad':forms.Select(attrs={'class': 'form-control'}),
-            'encargado_secretaria':forms.Select(attrs={'class': 'form-control'}),
+            'encargado':forms.Select(attrs={'class': 'form-control'}),
             'crear': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
              'editar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
               'eliminar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
@@ -27,9 +26,13 @@ class Usuario_formulario(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['secretaria'].widget= forms.Select(attrs={'class': 'form-select'}, choices=[(secretaria.id,secretaria.secretaria) for secretaria in Secretaria.objects.all()])
-        self.fields['secretaria'].label='Seleccione su secretaria'
-        self.fields['area_trabajo'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre_area) for rol in Area_trabajo.objects.all()])
-        self.fields['area_trabajo'].label='Seleccione su area de trabajo'
+        self.fields['secretaria'].label='Seleccione la secretaria'
+        self.fields['area'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre_area) for rol in Area.objects.all()])
+        self.fields['area'].label='Seleccione la area'
+        self.fields['unidad'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre) for rol in Unidad.objects.all()])
+        self.fields['unidad'].label='Seleccione la unidad'
+        self.fields['mango'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre) for rol in Mango.objects.all()])
+        self.fields['mango'].label='Seleccione la ZZZ'
         
     def save(self, commit=True):
         user = super(Usuario_formulario, self).save(commit=False)

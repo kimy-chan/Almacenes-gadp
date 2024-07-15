@@ -68,8 +68,8 @@ def realizar_pedido(request, id_material):
             formulario=  Formualrio_pedido(request.POST)
     else:
         formulario=  Formualrio_pedido()
-        
     context={
+        'material':get_object_or_404(Materiales,pk=id_material),
         'forms': formulario
     }
     return render(request , 'pedidos/realizar_pedido.html', context)
@@ -114,10 +114,9 @@ def mostrar_informacion_pedidio_aprobaciones(request,id_pedido):
             'aprobacion':aprobacion.estado_autorizacion,
             'nombre':aprobacion.usuario.persona.nombre + " " + aprobacion.usuario.persona.apellidos ,
             'area':aprobacion.usuario.area_trabajo.nombre_area,
-            #'fecha': aprobacion.fecha_de_autorizacion
+            'fecha': aprobacion.fecha_de_autorizacion.strftime('%Y-%m-%d') if aprobacion.fecha_de_autorizacion else None
             }
             data.append(informacion)
-        print(data)
         return JsonResponse({'data':data})
 
 def eliminar_mi_pedido(request, id_pedido):
@@ -127,7 +126,6 @@ def eliminar_mi_pedido(request, id_pedido):
         if p.estado_autorizacion == True:
             return redirect(f"{reverse('mis_pedidos')}?error=Este pedido ha sido aprobado y no se puede cancelar")
         continue
-
     pedido.delete()
     return redirect(f"{reverse('mis_pedidos')}?success=Pedido cancelado correctamente")
 

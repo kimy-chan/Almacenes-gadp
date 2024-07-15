@@ -7,31 +7,52 @@ from ..persona.models import Persona
 
 
 
-
 class Secretaria(models.Model):
-    secretaria = models.CharField(max_length=100, blank=False , null=False, unique=True) 
-
+    secretaria = models.CharField(max_length=100, blank=False , null=False, unique=True)
     @receiver(post_migrate)
     def crear_secreatria_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
         if sender.name == 'almacenes.usuarios':
             if not Secretaria.objects.exists():
-                Secretaria.objects.create(secretaria='Sin secretaria')
+                Secretaria.objects.create(secretaria='Ninguno')
     def __str__(self) -> str:
         return f"{self.secretaria}"
-    
 
-    
-class Area_trabajo(models.Model):
-    nombre_area=models.CharField(max_length=100,blank=False, null=False, unique=True )
+class Area(models.Model):
+    nombre_area=models.CharField(max_length=100,blank=False, null=False, unique=True)
+    @receiver(post_migrate)
+    def crear_area_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
+        if sender.name == 'almacenes.usuarios':
+            if not Area.objects.exists():
+                Area.objects.create(nombre_area='Ninguno')
     def __str__(self) -> str:
-        return f"{self.nombre_area}"  
+        return f"{self.nombre_area}"
+ 
+class Unidad(models.Model):
+    nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
+    @receiver(post_migrate)
+    def crear_unidad_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
+        if sender.name == 'almacenes.usuarios':
+            if not Unidad.objects.exists():
+                Unidad.objects.create(nombre='Ninguno')
+    def __str__(self) -> str:
+        return f"{self.nombre}"
 
+class Mango(models.Model):
+    nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
+    @receiver(post_migrate)
+    def crear_mango_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
+        if sender.name == 'almacenes.usuarios':
+            if not Mango.objects.exists():
+                Mango.objects.create(nombre='Ninguno')
+    def __str__(self) -> str:
+        return f"{self.nombre}"
+      
 
     
 class Usuario(AbstractBaseUser, PermissionsMixin):
     ENCARGADO=[
-        ('Encargado','Encargado'),
-        ('Personal','Personal')
+        (True,'Encargado'),
+        (False,'Personal')
     ]
     ROLES_CHOICES=[
         ('Administrador','Administrador'),
@@ -44,16 +65,16 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     email=models.EmailField(max_length=255, blank=True, null=True)
     item = models.CharField(max_length=100, blank=True, null=True)
     is_staff= models.CharField(default=True)#desactivar usuario
-    area_trabajo = models.ForeignKey(Area_trabajo, blank=False, null=False, on_delete=models.RESTRICT)
-    encargado_secretaria=models.CharField( blank=False, null=False, choices=ENCARGADO, default='Personal', verbose_name='Jefe  de la secretaria' ) 
-    encargado_unidad= models.CharField( blank=False, null=False, choices=ENCARGADO, default='Personal' ,verbose_name='Jefe de la unidad' )
+    encargado=models.BooleanField(blank=False, null=False, choices=ENCARGADO, default=False, verbose_name='Jefe  de la secretaria' ) 
     crear = models.BooleanField(default=False,verbose_name='Crear material')
     editar= models.BooleanField(default=False,verbose_name='editar material')
     eliminar=models.BooleanField(default=False,verbose_name='Eliminar material')
     rol=models.CharField(max_length=250, choices=ROLES_CHOICES, default='Personal')
-    secretaria = models.ForeignKey(Secretaria, on_delete=models.RESTRICT, blank=False, null=True)
+    secretaria = models.ForeignKey(Secretaria, on_delete=models.RESTRICT, blank=True, null=True)
+    unidad= models.ForeignKey(Unidad, on_delete=models.RESTRICT,blank=True, null=True)
     persona = models.ForeignKey(Persona, on_delete=models.RESTRICT)
-    pedidos_general=models.BooleanField(default=False)#usuarios que le llegara todos los pedidos aprobados ´por sus jefes de secretaria
+    area = models.ForeignKey(Area, blank=False, null=False, on_delete=models.RESTRICT)
+    mango = models.ForeignKey(Mango, on_delete=models.RESTRICT)
     es_habilitado=models.BooleanField(default=True)
     es_activo=models.BooleanField(default=True)
 
@@ -64,7 +85,3 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return f" Activo:{self.es_activo}"
 
-
-
-    def __str__(self) -> str:
-        return f"{self.permiso}"

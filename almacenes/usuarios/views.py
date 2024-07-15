@@ -2,11 +2,11 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, logout, login
 from django.db import IntegrityError
 from .forms import Usuario_formulario
-from .models import Usuario
+from .models import Usuario,Unidad, Area
 
 
 
-from .models import Usuario, Secretaria, Area_trabajo
+from .models import Usuario, Secretaria, Area
 from django.http import JsonResponse
 
 from almacenes.persona.forms import Formulario_persona 
@@ -22,7 +22,7 @@ def login_sistema(request):
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
         if user is not None and user.es_activo and user.es_habilitado:
-            if(user.area_trabajo.nombre_area == 'Almacen'):
+            if(user.area.nombre_area == 'Almacen'):
                 login(request, user)
                 return redirect('administracion')
             else:
@@ -95,21 +95,39 @@ def crear_secretaria_listar(request):
     else:
         secretatias = list(Secretaria.objects.all().values())   
         return JsonResponse({'data':secretatias}, safe=False)
+    
+def crear_unidad_listar(request):
+    if request.method == 'POST':
+        unidad= request.POST['unidad']
+        print(unidad)
+        if not unidad:
+            return JsonResponse({'error':'Este campo es obligatorio'})
+        try:   
+            unidad= Unidad.objects.create(nombre=unidad)
+            unidad.save()
+            return JsonResponse({'data':True})
+        except IntegrityError:
+            return JsonResponse({"error": "El valor  ya existe"})
+    else:
+        unidad= list(Unidad.objects.all().values())
+        return JsonResponse({'data':unidad})
 
-def crear_aras_trabajo_listar(request):
+
+def crear_areas(request):
     if(request.method == 'POST'):
+        
         try:
             nombre_area= request.POST['nombre_area']
             if not nombre_area:
                 return JsonResponse({'error':'Este campo es obligatorio'})
-            nombre_area= Area_trabajo(nombre_area= nombre_area)
+            nombre_area= Area(nombre_area= nombre_area)
             nombre_area.save()
             return JsonResponse({'data':True})
         except IntegrityError:
             return JsonResponse({"error": "El valor  ya existe"})
     else:
-        area_trabajo = list(Area_trabajo.objects.all().values())
-        return JsonResponse({'data':area_trabajo})
+        area = list(Area.objects.all().values())
+        return JsonResponse({'data':area})
     
 def listando_usuarios(request):
     listado_cuentas_usuarios = Usuario.objects.select_related('persona').filter(es_habilitado=True)

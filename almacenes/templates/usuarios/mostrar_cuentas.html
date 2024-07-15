@@ -6,7 +6,7 @@
     <h2 class="text-center">Cuentas de usuario</h2>
     <div class="row justify-content-start">
         <div class="col-auto me-2">
-            <a class="btn btn-success btn-sm" href="{% url 'creando_usuarios' %}">Añadir</a>
+            <a class="btn btn-success btn-sm" href="{% url 'creando_usuarios' %}">Añadir Usuario</a>
         </div>
         <div class="col-auto me-2 ms-2">
             <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal">
@@ -15,7 +15,17 @@
         </div>
         <div class="col-auto ms-2">
             <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#rolesModal">
-                Areas de trabajo
+                Area
+            </button>
+        </div>
+        <div class="col-auto ms-2">
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalUnidad">
+                unidad
+            </button>
+        </div>
+        <div class="col-auto ms-2">
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#rolesModal">
+                Mango
             </button>
         </div>
     </div>
@@ -102,7 +112,50 @@
 
 
 
+
     <!--fin modal Area de tarabajo-->
+
+
+    <div class="modal fade" id="modalUnidad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Unidad</h5>
+
+                </div>
+                <div class="modal-body">
+                    <div class="col-auto me-2 ms-2">
+                        <form id="unidadform" action="{%url 'unidad' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="id_secretaria">Nombre unidad</label>
+                                    <input type="text" id="id_secretaria" name="unidad" class="form-control" required>
+                                    <span id="error_unidad"></span>
+                                </div>
+                                <div class="col-2" style="margin-top: 28px;">
+                                    <button id="unidad" class="btn btn-success btn-sm" type="submit">Añadir</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table ">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Unidad</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_table_unidad">
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -120,7 +173,7 @@
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-6">
-                                    <label for="nombre_area">Nombre de area de trabajo</label>
+                                    <label for="nombre_area">Nombre de area</label>
                                     <input type="text" id="nombre_area" name="nombre_area" class="form-control"
                                         required>
                                     <span id="error_trabajo"></span>
@@ -158,11 +211,13 @@
 {% block js %}
 <script src="{% static 'js/secretaria.js' %}"></script>
 <script src="{% static 'js/areas_trabajo.js' %}"></script>
+<script src="{% static 'js/unidad.js' %}"></script>
 
 <script>
     window.onload = function () {
         listar_areas_trabajo(),
-            Listar_secretaria()
+            Listar_secretaria(),
+            listar_unidad()
     }
 </script>
 
