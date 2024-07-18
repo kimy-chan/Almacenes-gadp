@@ -25,7 +25,16 @@ function listar_areas_trabajo() {
                 const row = document.createElement('tr');
                 const nombre_area = document.createElement('td');
                 nombre_area.textContent = element.nombre_area; // Ajusta según las propiedades de tus datos
+
                 row.appendChild(nombre_area);
+                const acciones = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Eliminar';
+                deleteButton.className = 'btn btn-danger btn-sm';
+                deleteButton.onclick = () => //crear la funcion para eliminar
+                    acciones.appendChild(deleteButton);
+                row.appendChild(acciones);
+
                 tbody_table.appendChild(row);
 
             });

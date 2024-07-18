@@ -27,6 +27,15 @@ function Listar_secretaria() {
                     const name_secretaria = document.createElement('td');
                     name_secretaria.textContent = element.secretaria; // Ajusta según las propiedades de tus datos
                     row.appendChild(name_secretaria);
+
+                    const acciones = document.createElement('td');
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Eliminar';
+                    deleteButton.className = 'btn btn-danger btn-sm';
+                    deleteButton.onclick = () => eliminar_sercretaria(element.id)
+                    acciones.appendChild(deleteButton);
+                    row.appendChild(acciones);
+
                     tbody.appendChild(row);
                 });
             }
@@ -38,3 +47,6 @@ function Listar_secretaria() {
 
 }
 
+function eliminar_sercretaria(id) {
+
+}

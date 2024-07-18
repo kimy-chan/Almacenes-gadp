@@ -1,15 +1,15 @@
 
-document.getElementById('unidad').addEventListener('click', (e) => {
+document.getElementById('id_servicios').addEventListener('click', (e) => {
     e.preventDefault()
-    const formulario = document.getElementById('unidadform')
+    const formulario = document.getElementById('id_form_servicios')
 
-    axios.post('unidad', formulario)
+    axios.post('servicios', formulario)
         .then((result) => {
             if (result.data.error) {
-                document.getElementById('error_unidad').innerHTML = result.data.error
+                document.getElementById('error_servicios').innerHTML = result.data.error
             } else if (result.data.data) {
-                document.getElementById('error_unidad').innerHTML = ''
-                listar_unidad()
+                document.getElementById('error_servicios').innerHTML = ''
+                listar_servicios()
             }
         }).catch((err) => {
             alert(err)
@@ -18,15 +18,15 @@ document.getElementById('unidad').addEventListener('click', (e) => {
 })
 
 
-function listar_unidad() {
-    axios.get('unidad')
+function listar_servicios() {
+    axios.get('servicios')
         .then((result) => {
-            tbody_table_unidad = document.getElementById('tbody_table_unidad')
-            tbody_table_unidad.innerHTML = ''
+            tbody_table_servicios = document.getElementById('tbody_table_servicios')
+            tbody_table_servicios.innerHTML = ''
             result.data.data.forEach(element => {
                 const row = document.createElement('tr');
                 const nombre = document.createElement('td');
-                nombre.textContent = element.nombre; // Ajusta según las propiedades de tus datos
+                nombre.textContent = element.nombre;
                 row.appendChild(nombre);
                 const acciones = document.createElement('td');
                 const deleteButton = document.createElement('button');
@@ -36,10 +36,11 @@ function listar_unidad() {
                     acciones.appendChild(deleteButton);
                 row.appendChild(acciones);
 
-                tbody_table_unidad.appendChild(row);
+                tbody_table_servicios.appendChild(row);
             });
         })
         .catch((e) => {
+            console.log(e);
             alert('error de servidor')
         }
 

@@ -1,13 +1,12 @@
 from django import forms
-from .models import Secretaria,Usuario, Area,Unidad, Mango
+from .models import Secretaria,Usuario, Area,Unidad
 
 
 class Usuario_formulario(forms.ModelForm):
     confirmar_password= forms.CharField(label='confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}) )
-    
     class Meta:
         model=Usuario
-        fields=['username','password','mango','confirmar_password','email','encargado', 'item', 'area','rol','crear','editar','eliminar','secretaria','unidad']
+        fields=['username','password','confirmar_password','email','encargado', 'item', 'area','rol','crear','editar','eliminar','secretaria','unidad']
         widgets={
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -31,8 +30,7 @@ class Usuario_formulario(forms.ModelForm):
         self.fields['area'].label='Seleccione la area'
         self.fields['unidad'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre) for rol in Unidad.objects.all()])
         self.fields['unidad'].label='Seleccione la unidad'
-        self.fields['mango'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre) for rol in Mango.objects.all()])
-        self.fields['mango'].label='Seleccione la ZZZ'
+      
         
     def save(self, commit=True):
         user = super(Usuario_formulario, self).save(commit=False)

@@ -7,15 +7,6 @@ from ..persona.models import Persona
 
 
 
-class Secretaria(models.Model):
-    secretaria = models.CharField(max_length=100, blank=False , null=False, unique=True)
-    @receiver(post_migrate)
-    def crear_secreatria_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
-        if sender.name == 'almacenes.usuarios':
-            if not Secretaria.objects.exists():
-                Secretaria.objects.create(secretaria='Ninguno')
-    def __str__(self) -> str:
-        return f"{self.secretaria}"
 
 class Area(models.Model):
     nombre_area=models.CharField(max_length=100,blank=False, null=False, unique=True)
@@ -26,9 +17,51 @@ class Area(models.Model):
                 Area.objects.create(nombre_area='Ninguno')
     def __str__(self) -> str:
         return f"{self.nombre_area}"
- 
+
+    
+
+
+
+
+
+    
+class Oficinas(models.Model):
+    nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
+    area= models.ForeignKey(Area, on_delete=models.RESTRICT, null=True, blank=True)
+    @receiver(post_migrate)
+    def crear_mango_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
+        if sender.name == 'almacenes.usuarios':
+            if not Oficinas.objects.exists():
+                Oficinas.objects.create(nombre='Ninguno')
+    def __str__(self) -> str:
+        return f"{self.nombre}"
+class Direccion_servicios(models.Model):
+    nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
+    oficina=models.ForeignKey(Oficinas, on_delete=models.RESTRICT, blank= True, null=True)
+    @receiver(post_migrate)
+    def crear_mango_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
+        if sender.name == 'almacenes.usuarios':
+            if not Direccion_servicios.objects.exists():
+                Direccion_servicios.objects.create(nombre='Ninguno')
+    def __str__(self) -> str:
+        return f"{self.nombre}"
+class Direccion_departamental(models.Model):
+    nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
+    area= models.ForeignKey(Area, on_delete=models.RESTRICT, null=True, blank=True)
+    servicios=models.ForeignKey(Direccion_servicios, on_delete=models.RESTRICT, null=True, blank=True)
+    @receiver(post_migrate)
+    def crear_mango_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
+        if sender.name == 'almacenes.usuarios':
+            if not Direccion_departamental.objects.exists():
+                Direccion_departamental.objects.create(nombre='Ninguno')
+    def __str__(self) -> str:
+        return f"{self.nombre}"
+
+    
 class Unidad(models.Model):
     nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
+    #area=models.ForeignKey(Area, on_delete=models.RESTRICT, blank= True, null=True)
+    #oficina=models.ForeignKey(Oficinas, on_delete=models.RESTRICT, blank= True, null=True)
     @receiver(post_migrate)
     def crear_unidad_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
         if sender.name == 'almacenes.usuarios':
@@ -36,18 +69,23 @@ class Unidad(models.Model):
                 Unidad.objects.create(nombre='Ninguno')
     def __str__(self) -> str:
         return f"{self.nombre}"
+    
+class Secretaria(models.Model):
+    secretaria = models.CharField(max_length=100, blank=False , null=False, unique=True)
+    #unidad=models.ForeignKey(Unidad, on_delete=models.RESTRICT, null=True, blank=True)
+    #oficina=models.ForeignKey(Oficinas, on_delete=models.RESTRICT, null=True, blank=True)
+    #servicios= models.ForeignKey(Direccion_servicios, on_delete=models.RESTRICT, null=True, blank=True)
 
-class Mango(models.Model):
+    def __str__(self) -> str:
+        return f"{self.secretaria}"
+
+class Unidad(models.Model):
     nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
-    @receiver(post_migrate)
-    def crear_mango_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
-        if sender.name == 'almacenes.usuarios':
-            if not Mango.objects.exists():
-                Mango.objects.create(nombre='Ninguno')
+    #area=models.ForeignKey(Area, on_delete=models.RESTRICT, blank= True, null=True)
+    #oficina=models.ForeignKey(Oficinas, on_delete=models.RESTRICT, blank= True, null=True)
+    secretaria=models.ForeignKey(Secretaria, on_delete=models.RESTRICT, blank= True, null=True)
     def __str__(self) -> str:
         return f"{self.nombre}"
-      
-
     
 class Usuario(AbstractBaseUser, PermissionsMixin):
     ENCARGADO=[
@@ -73,8 +111,9 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     secretaria = models.ForeignKey(Secretaria, on_delete=models.RESTRICT, blank=True, null=True)
     unidad= models.ForeignKey(Unidad, on_delete=models.RESTRICT,blank=True, null=True)
     persona = models.ForeignKey(Persona, on_delete=models.RESTRICT)
-    area = models.ForeignKey(Area, blank=False, null=False, on_delete=models.RESTRICT)
-    mango = models.ForeignKey(Mango, on_delete=models.RESTRICT)
+    area = models.ForeignKey(Area, blank=True, null=True, on_delete=models.RESTRICT)
+    servicios=models.ForeignKey(Direccion_servicios, blank=True, null=True, on_delete=models.RESTRICT)
+    direccion_departamental=models.ForeignKey(Direccion_departamental,blank=True, null=True, on_delete=models.RESTRICT)
     es_habilitado=models.BooleanField(default=True)
     es_activo=models.BooleanField(default=True)
 

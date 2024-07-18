@@ -1,15 +1,14 @@
 
-document.getElementById('unidad').addEventListener('click', (e) => {
+document.getElementById('id_departamental').addEventListener('click', (e) => {
     e.preventDefault()
-    const formulario = document.getElementById('unidadform')
-
-    axios.post('unidad', formulario)
+    const formulario = document.getElementById('id_form_departamental')
+    axios.post('departamental', formulario)
         .then((result) => {
             if (result.data.error) {
-                document.getElementById('error_unidad').innerHTML = result.data.error
+                document.getElementById('error_departamental').innerHTML = result.data.error
             } else if (result.data.data) {
-                document.getElementById('error_unidad').innerHTML = ''
-                listar_unidad()
+                document.getElementById('error_departamental').innerHTML = ''
+                listar_departamental()
             }
         }).catch((err) => {
             alert(err)
@@ -18,11 +17,11 @@ document.getElementById('unidad').addEventListener('click', (e) => {
 })
 
 
-function listar_unidad() {
-    axios.get('unidad')
+function listar_departamental() {
+    axios.get('departamental')
         .then((result) => {
-            tbody_table_unidad = document.getElementById('tbody_table_unidad')
-            tbody_table_unidad.innerHTML = ''
+            tbody_table_departamental = document.getElementById('tbody_table_departamental')
+            tbody_table_departamental.innerHTML = ''
             result.data.data.forEach(element => {
                 const row = document.createElement('tr');
                 const nombre = document.createElement('td');
@@ -36,10 +35,12 @@ function listar_unidad() {
                     acciones.appendChild(deleteButton);
                 row.appendChild(acciones);
 
-                tbody_table_unidad.appendChild(row);
+                tbody_table_departamental.appendChild(row);
+
             });
         })
         .catch((e) => {
+            console.log(e);
             alert('error de servidor')
         }
 

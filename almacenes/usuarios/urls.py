@@ -1,5 +1,5 @@
 from django.urls import path, include 
-from .views  import login_sistema, logout_view,crear_unidad_listar, creando_usuario, listando_usuarios, crear_secretaria_listar, crear_areas,soft_delete, activar_cuenta, desactivar_cuenta, actulizar_cuenta_usuario
+from .views  import login_sistema, Crear_unidad_secretaria,logout_view,crear_unidad_listar,crear_oficinas_listar, crear_unidad_dir_departamental,crear_servicios_listar, creando_usuario, listando_usuarios, crear_secretaria_listar, crear_areas,soft_delete, activar_cuenta, desactivar_cuenta, actulizar_cuenta_usuario
 urlpatterns = [
 
     path("", login_sistema, name="login"),
@@ -13,5 +13,9 @@ urlpatterns = [
     
     path('actulizar_cuenta_usuario/<int:id_usuario>/<int:id_persona>', actulizar_cuenta_usuario, name='actulizar_cuenta_usuario') ,
     path("logout", logout_view, name='logout'),
-    path("unidad",crear_unidad_listar , name='unidad' )
+    path("unidad",crear_unidad_listar , name='unidad' ),
+    path("servicios",crear_servicios_listar , name='servicios' ),
+    path('departamental', crear_unidad_dir_departamental, name='departamental'),
+    path('oficinas', crear_oficinas_listar, name='oficinas'),
+    path('Crear_unidad_secretaria', Crear_unidad_secretaria, name='Crear_unidad_secretaria')
 ]

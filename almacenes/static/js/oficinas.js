@@ -1,15 +1,14 @@
 
-document.getElementById('unidad').addEventListener('click', (e) => {
+document.getElementById('id_oficinas').addEventListener('click', (e) => {
     e.preventDefault()
-    const formulario = document.getElementById('unidadform')
-
-    axios.post('unidad', formulario)
+    const formulario = document.getElementById('id_form_oficinas')
+    axios.post('oficinas', formulario)
         .then((result) => {
             if (result.data.error) {
-                document.getElementById('error_unidad').innerHTML = result.data.error
+                document.getElementById('error_oficinas').innerHTML = result.data.error
             } else if (result.data.data) {
-                document.getElementById('error_unidad').innerHTML = ''
-                listar_unidad()
+                document.getElementById('error_oficinas').innerHTML = ''
+                listar_oficinas()
             }
         }).catch((err) => {
             alert(err)
@@ -18,28 +17,32 @@ document.getElementById('unidad').addEventListener('click', (e) => {
 })
 
 
-function listar_unidad() {
-    axios.get('unidad')
+function listar_oficinas() {
+    axios.get('oficinas')
         .then((result) => {
-            tbody_table_unidad = document.getElementById('tbody_table_unidad')
-            tbody_table_unidad.innerHTML = ''
+            tbody_table_oficinas = document.getElementById('tbody_table_oficinas')
+            tbody_table_oficinas.innerHTML = ''
             result.data.data.forEach(element => {
                 const row = document.createElement('tr');
                 const nombre = document.createElement('td');
                 nombre.textContent = element.nombre; // Ajusta según las propiedades de tus datos
                 row.appendChild(nombre);
+
                 const acciones = document.createElement('td');
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Eliminar';
                 deleteButton.className = 'btn btn-danger btn-sm';
-                deleteButton.onclick = () => //crear la funcion para eliminar
-                    acciones.appendChild(deleteButton);
+                deleteButton.onclick = () => eliminar_oficina(element.id); // Ajusta según las propiedades de tus datos
+                acciones.appendChild(deleteButton);
                 row.appendChild(acciones);
 
-                tbody_table_unidad.appendChild(row);
+
+                tbody_table_oficinas.appendChild(row);
+
             });
         })
         .catch((e) => {
+            console.log(e);
             alert('error de servidor')
         }
 

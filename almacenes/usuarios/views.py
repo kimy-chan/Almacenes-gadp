@@ -2,11 +2,11 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, logout, login
 from django.db import IntegrityError
 from .forms import Usuario_formulario
-from .models import Usuario,Unidad, Area
 
 
 
-from .models import Usuario, Secretaria, Area
+from .models import Usuario, Secretaria, Direccion_servicios, Oficinas, Unidad, Direccion_departamental,Area
+
 from django.http import JsonResponse
 
 from almacenes.persona.forms import Formulario_persona 
@@ -95,6 +95,19 @@ def crear_secretaria_listar(request):
     else:
         secretatias = list(Secretaria.objects.all().values())   
         return JsonResponse({'data':secretatias}, safe=False)
+def Crear_unidad_secretaria(request):
+    if request.method== 'POST':
+        unidad = request.POST.get('unidad')
+        id_secretaria = request.POST.get('secretaria_id')
+        if not unidad and id_secretaria:
+             return JsonResponse({'error':'campos obligatorios'})
+        secretaria=get_object_or_404(Secretaria, pk=id_secretaria)
+        try:
+            unidad= Unidad.objects.create(nombre=unidad, secretaria=secretaria)
+            unidad.save()
+            return JsonResponse({'data':True})
+        except IntegrityError:
+            return JsonResponse({"error": "El valor  ya existe"})
     
 def crear_unidad_listar(request):
     if request.method == 'POST':
@@ -111,6 +124,36 @@ def crear_unidad_listar(request):
     else:
         unidad= list(Unidad.objects.all().values())
         return JsonResponse({'data':unidad})
+    
+def crear_unidad_dir_departamental(request):
+    if request.method == 'POST':
+        departamental= request.POST['departamental']
+        if not departamental:
+            return JsonResponse({'error':'Este campo es obligatorio'})
+        try:   
+            departamental= Direccion_departamental.objects.create(nombre=departamental)
+            departamental.save()
+            return JsonResponse({'data':True})
+        except IntegrityError:
+            return JsonResponse({"error": "El valor  ya existe"})
+    else:
+        departamental= list(Direccion_departamental.objects.all().values())
+        return JsonResponse({'data':departamental})
+    
+def crear_oficinas_listar(request):
+    if request.method == 'POST':
+        oficinas= request.POST['oficinas']
+        if not oficinas:
+            return JsonResponse({'error':'Este campo es obligatorio'})
+        try:   
+            oficinas= Oficinas.objects.create(nombre=oficinas)
+            oficinas.save()
+            return JsonResponse({'data':True})
+        except IntegrityError:
+            return JsonResponse({"error": "El valor  ya existe"})
+    else:
+        oficinas= list(Oficinas.objects.all().values())
+        return JsonResponse({'data':oficinas})
 
 
 def crear_areas(request):
@@ -129,6 +172,22 @@ def crear_areas(request):
         area = list(Area.objects.all().values())
         return JsonResponse({'data':area})
     
+
+def crear_servicios_listar(request):
+    if(request.method == 'POST'):
+        try:
+            nombre= request.POST['servicios']
+            if not nombre:
+                return JsonResponse({'error':'Este campo es obligatorio'})
+            servicio= Direccion_servicios(nombre= nombre)
+            servicio.save()
+            return JsonResponse({'data':True})
+        except IntegrityError:
+            return JsonResponse({"error": "El valor  ya existe"})
+    else:
+        servicio = list(Direccion_servicios.objects.all().values())
+        return JsonResponse({'data':servicio})
+
 def listando_usuarios(request):
     listado_cuentas_usuarios = Usuario.objects.select_related('persona').filter(es_habilitado=True)
     listado_cuentas_usuarios = paginador_general(request, listado_cuentas_usuarios)
@@ -159,3 +218,6 @@ def activar_cuenta(request, id):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def crear_ruta_pedido(request):
+    return render(request,'usuarios/rutas.pedidos.html')
