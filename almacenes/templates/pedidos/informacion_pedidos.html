@@ -2,95 +2,86 @@
 
 {% block index %}
 
-<div class="container">
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h3>Datos Personales</h3>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-12">
-            <!-- Datos personales -->
-            <div class="row">
-                <div class="text-center">
-                    <h3>Datos Personales</h3>
-                </div>
-                <div class="col-4">
-
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <p>{{data.0.usuario.persona.nombre}} {{data.0.usuario.persona.apellidos}}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo Electrónico:</label>
-                        <p>juanperez@example.com</p>
-                    </div>
-                </div>
-                <div class="col-4">
-
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <p>{{data.0.usuario.persona.nombre}} {{data.0.usuario.persona.apellidos}}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo Electrónico:</label>
-                        <p>juanperez@example.com</p>
-                    </div>
-                </div>
-                <div class="col-4">
-
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <p>{{data.0.usuario.persona.nombre}} {{data.0.usuario.persona.apellidos}}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo Electrónico:</label>
-                        <p>juanperez@example.com</p>
-                    </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Nombre:</h5>
+                    <p class="card-text">{{ data.0.usuario.persona.nombre }} {{ data.0.usuario.persona.apellidos }}</p>
+                    <h5 class="card-title">Correo Electrónico:</h5>
+                    <p class="card-text">{{ data.0.usuario.persona.email }}</p>
                 </div>
             </div>
-
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Nombre:</h5>
+                    <p class="card-text">{{ data.0.usuario.persona.nombre }} {{ data.0.usuario.persona.apellidos }}</p>
+                    <h5 class="card-title">Correo Electrónico:</h5>
+                    <p class="card-text">{{ data.0.usuario.persona.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Nombre:</h5>
+                    <p class="card-text">{{ data.0.usuario.persona.nombre }} {{ data.0.usuario.persona.apellidos }}</p>
+                    <h5 class="card-title">Correo Electrónico:</h5>
+                    <p class="card-text">{{ data.0.usuario.persona.email }}</p>
+                </div>
+            </div>
         </div>
     </div>
 
-
-
-
-    <div class="col-12">
-        <!-- Pedidos -->
-        <div class="text-center">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
             <h3>Pedidos</h3>
         </div>
-        <div class="row">
-            {% for pedido in data %}
-            <div class="col-12">
-                <div class="card bg-light mb-3">
+    </div>
+    <div class="row">
+        {% for pedido in data %}
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-md-6">
 
-                            <div class="card-body">
-                                <h5 class="card-title">{{pedido.producto.nombre}}</h5>
-                                <p class="card-text">{{pedido.descripcion}}</p>
-                                <p class="card-text"> Cantidad de pedido {{pedido.cantidad_pedido}} </p>
-                            </div>
+                            <h5 class="card-title">Producto: {{ pedido.pedido.material.nombre }}</h5>
+                            <p class="card-text">Descipcion: {{ pedido.pedido.descripcion }}</p>
+                            <p class="card-text">Cantidad de pedido: {{ pedido.pedido.cantidad_pedida }}</p>
                         </div>
-                        <div class="col-6">
-                            <div class=""> Estado de entrega:
-                                <form action="" method="post">
-                                    <select name="" id="">
-                                        <option value="Autorizado">Completado</option>
-                                        <option value="">Completado</option>
-                                        <option value="">Completado</option>
+                        <div class="col-md-6">
+                            <form action="" method="post">
+                                <div class="form-group">
+                                    <label for="estado-entrega">Estado de entrega:</label>
+                                    <select class="form-control" name="estado-entrega" id="estado-entrega">
+                                        <option value="Completado">Completado</option>
+                                        <option value="Pendiente">Pendiente</option>
                                     </select>
-                                    <label for="">Cantidad de entrega</label>
-                                    <input type="number">
-                                </form>
-
-                            </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cantidad-entrega">Cantidad de entrega:</label>
+                                    <input type="number" class="form-control" name="cantidad-entrega"
+                                        id="cantidad-entrega">
+                                </div>
+                                <button class="btn btn-success btn-sm mt-2" type="submit">Entregar</button>
+                                <button class="btn btn-danger btn-sm mt-2" type="submit">Rechazar</button>
+                            </form>
                         </div>
-
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
-</div>
 </div>
 
 {% endblock index %}

@@ -2,22 +2,21 @@
 
 {% block usuario %}
 
-
 <div class="container">
+    <div class="text-center">
+        <h2>{{ usuario.unidad.nombre }}</h2>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Codigo</th>
                 <th>Nombre completo</th>
                 <th>Material</th>
-                <th>descripcion</th>
-
+                <th>Descripcion</th>
                 <th>Cantidad de pedido</th>
-
-                <th>fecha de pedido</th>
-                <th>fecha de Autorizacion</th>
-                <th>Autorizar</th>
-
+                <th>Fecha de pedido</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -27,37 +26,53 @@
                 <td>{{ pedido.usuario.persona.nombre }} {{ pedido.usuario.persona.apellidos }}</td>
                 <td>{{ pedido.material.nombre }}</td>
                 <td>{{ pedido.descripcion }}</td>
-                <td>{{ pedido.cantidad_pedida}} {{ pedido.unidad_manejo}}</td>
-
-                </td>
+                <td>{{ pedido.cantidad_pedida }} {{ pedido.unidad_manejo }}</td>
                 <td>{{ pedido.fecha_pedido|date:"m/d/y" }}</td>
-
-                <td>{% if pedido.fecha_de_autorizacion %}
-                    {{pedido.fecha_de_autorizacion|date:"m/d/y"}}
+                <td>
+                    {% with pedido.autorizacion_pedido_set.first as autorizacion %}
+                    {% if autorizacion.fecha_de_autorizacion %}
+                    {{ autorizacion.fecha_de_autorizacion|date:"m/d/y" }}
                     {% endif %}
+                    {% endwith %}
                 </td>
                 <td>
-
-                    {% if pedido.estado_pedido_unidad_mayor_rechazar %}<!--Estado de rechazo-->
-                    <button class="btn btn-danger btn-sm" disabled="disabled">rechazado</button>
-                    {% elif pedido.estado_pedido_unidad_mayor %}
-                    <button class="btn btn-success btn-sm" disabled="disabled">Autorizado</button>
+                    {% with pedido.autorizacion_pedido_set.first as autorizacion %}
+                    {% if autorizacion %}
+                    {% if not autorizacion.estado_autorizacion %}
+                    Rechazado
+                    {% elif autorizacion.fecha_de_autorizacion %}
+                    Autorizado
                     {% else %}
                     <div class="row">
-                        <div class="col-6"><a href="{%url 'autorizar_pedidos_unidad_mayor' pedido.id %}"
+                        <div class="col-6">
+                            <a href="{% url 'autorizar_pedido' pedido.id %}"
                                 class="btn btn-success btn-sm">Autorizar</a>
                         </div>
-                        <div class="col-6"><a href="{%url 'rechazar_pedidos_unidad_mayor' pedido.id %}"
-                                class="btn btn-danger btn-sm">rechazar</a></div>
+                        <div class="col-6">
+                            <a href="{% url 'rechazar_pedido' pedido.id %}" class="btn btn-danger btn-sm">Rechazar</a>
+                        </div>
                     </div>
                     {% endif %}
+                    {% else %}
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{% url 'autorizar_pedido' pedido.id %}"
+                                class="btn btn-success btn-sm">Autorizar</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{% url 'rechazar_pedido' pedido.id %}" class="btn btn-danger btn-sm">Rechazar</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                 </td>
-                <th>
-                    {% endfor %}
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     {% include 'paginador/paginador.html' %}
-
 </div>
+
+
 
 {% endblock usuario %}

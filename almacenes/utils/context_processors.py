@@ -11,9 +11,9 @@ def user_datos(request):
  
         usuario_id = request.user.id 
         try:
-            usuario = Usuario.objects.select_related('persona','area_trabajo').get(pk=usuario_id)
-            print('hola')
-            print(usuario.rol)
+            usuario = Usuario.objects.select_related('persona','unidad').get(pk=usuario_id)
+            print(usuario.id)        
+            print(usuario.unidad.nombre)
             return {'usuario':usuario}
         except Exception as e:
             return {'usuario':None}

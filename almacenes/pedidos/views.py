@@ -83,14 +83,13 @@ def listar_pedidos(request):
     return render(request, 'pedidos/listar_pedido.html', context)
 
 def informacion_pedido(request, id_usuario):
-    datos_pedidos = Pedido.objects.select_related('usuario', 'material').filter(usuario_id=id_usuario)
-    datos_pedidos[0].usuario.persona.nombre
-    for x in datos_pedidos:
-        print(x.descripcion)
+    pedido_autorizado=Autorizacion_pedido.objects.select_related('pedido').filter(estado_autorizacion= True, pedido__usuario=id_usuario)
     context={
-        'data': datos_pedidos
+        'data': pedido_autorizado
     }
     return render(request, 'pedidos/informacion_pedidos.html', context)
+
+
 
 def mis_pedidos(request): #muestra los pedidos de cada unidad o secretaria
     id_usuario= request.user.id
@@ -107,16 +106,17 @@ def mostrar_informacion_pedidio_aprobaciones(request,id_pedido):
         data=[]
         pedido = get_object_or_404(Pedido, pk=id_pedido)
         aprobaciones = Autorizacion_pedido.objects.filter(pedido= pedido.id)
+        print(aprobaciones)
         for aprobacion in aprobaciones:
-            
             informacion ={
-            'secretaria':aprobacion.usuario.secretaria.secretaria,
+            'secretaria':aprobacion.usuario.unidad.nombre,
             'aprobacion':aprobacion.estado_autorizacion,
             'nombre':aprobacion.usuario.persona.nombre + " " + aprobacion.usuario.persona.apellidos ,
-            'area':aprobacion.usuario.area_trabajo.nombre_area,
+            'area':aprobacion.usuario.unidad.nombre,
             'fecha': aprobacion.fecha_de_autorizacion.strftime('%Y-%m-%d') if aprobacion.fecha_de_autorizacion else None
             }
             data.append(informacion)
+        print(data)
         return JsonResponse({'data':data})
 
 def eliminar_mi_pedido(request, id_pedido):
@@ -141,28 +141,31 @@ def todos_mis_pedidos(request):
 
 def listar_pedidos_unidad(request, id_usuario): #esta suelto no esta en uso
     usuario = get_object_or_404(Usuario, pk=id_usuario)
-    print(usuario)
+    if usuario.encargado== False:
+        return JsonResponse({"mensage" :"no tienes permispo"})
     pedidos_unidad= Pedido.objects.select_related('usuario','material').filter(
-        usuario__secretaria=usuario.secretaria.id
-        ,estado_pedido=False, 
-        estado_autorizacion_unidad=True)
-    print(pedidos_unidad)
+        usuario__unidad=usuario.unidad.id)
+    for a in pedidos_unidad:
+        au= Autorizacion_pedido.objects.filter(pedido=a.id)
+        for e in au:
+            print(e.estado_autorizacion)
     pedidos_unidad= paginador_general(request, pedidos_unidad)
+   
     context={
         'data':pedidos_unidad
         }
     return render(request, 'pedidos/listar_pedidos_unidad.html',context)
     
     
-def autorizar_pedidos(request, id_pedido):#autoria el pedido de cada secretaria
+def autorizar_pedidos(request, id_pedido):#autoria el pedido de cada unidad
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
     usuario = get_object_or_404(Usuario, pk= id_usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
     autorizacion_pedido.save()
-    return redirect(f"{reverse('listar_pedidos_secretarias', kwargs={'id_usuario': id_usuario})}?success=Pedido autorizado correctamente")
+    return redirect(f"{reverse('listar_pedidos_unidad', kwargs={'id_usuario': id_usuario})}?success=Pedido autorizado correctamente")
 
-
+#borrar
 def autorizar_pedidos_unidad_mayor(request, id_pedido):
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
@@ -175,11 +178,15 @@ def rechazar_pedido(request, id_pedido):
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
     usuario = get_object_or_404(Usuario, pk= id_usuario)
+    autorizacion= Autorizacion_pedido.objects.filter(pedido_id=id_pedido).all()
+    for a in autorizacion:
+        if(a.estado_autorizacion == True):
+            return JsonResponse({'mensage':'este pedido ya fue autorizado'})
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= False)
     autorizacion_pedido.save()
-    return redirect(f"{reverse('listar_pedidos_secretarias', kwargs={'id_usuario': id_usuario})}?pedido_rechazado=Pedido rechazado correctamente")
+    return redirect(f"{reverse('listar_pedidos_unidad', kwargs={'id_usuario': id_usuario})}?pedido_rechazado=Pedido rechazado correctamente")
     
-
+#borrar
 def rechazar_pedido_unidad_mayor(request, id_pedido):
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
@@ -188,6 +195,8 @@ def rechazar_pedido_unidad_mayor(request, id_pedido):
     return  redirect('listar_pedidos_unidad', id_usuario)
 
 
+
+# borrar
   
 def listar_Pedidos_secretarias(request, id_usuario):
     usuario= get_object_or_404(Usuario, pk=id_usuario)

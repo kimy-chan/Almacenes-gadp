@@ -22,7 +22,7 @@ def login_sistema(request):
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
         if user is not None and user.es_activo and user.es_habilitado:
-            if(user.area.nombre_area == 'Almacen'):
+            if(user.unidad.nombre == 'Almacen'):
                 login(request, user)
                 return redirect('administracion')
             else:

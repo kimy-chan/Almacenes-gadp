@@ -54,12 +54,8 @@
                         <a class="nav-link" href="{% url 'index' %}">Material en general</a>
                     </li>
 
-                    {% if usuario.encargado_secretaria == 'Encargado' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'listar_pedidos_secretarias' usuario.id %}">Pedidos
-                            secretaría</a>
-                    </li>
-                    {% elif usuario.encargado_unidad == 'Encargado' %}
+                    {% if usuario.encargado %}
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'listar_pedidos_unidad' usuario.id %}">Pedidos unidad</a>
                     </li>

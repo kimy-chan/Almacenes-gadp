@@ -56,20 +56,8 @@ class Direccion_departamental(models.Model):
                 Direccion_departamental.objects.create(nombre='Ninguno')
     def __str__(self) -> str:
         return f"{self.nombre}"
+#------------------------------------------------------------------
 
-    
-class Unidad(models.Model):
-    nombre =models.CharField(max_length=100,blank=False, null=False, unique=True )
-    #area=models.ForeignKey(Area, on_delete=models.RESTRICT, blank= True, null=True)
-    #oficina=models.ForeignKey(Oficinas, on_delete=models.RESTRICT, blank= True, null=True)
-    @receiver(post_migrate)
-    def crear_unidad_por_defecto (sender, **kwargs) -> str:#crea sin secrearia por defecto
-        if sender.name == 'almacenes.usuarios':
-            if not Unidad.objects.exists():
-                Unidad.objects.create(nombre='Ninguno')
-    def __str__(self) -> str:
-        return f"{self.nombre}"
-    
 class Secretaria(models.Model):
     secretaria = models.CharField(max_length=100, blank=False , null=False, unique=True)
     #unidad=models.ForeignKey(Unidad, on_delete=models.RESTRICT, null=True, blank=True)
