@@ -9,6 +9,10 @@ from almacenes.usuarios.models import Usuario
 from almacenes.utils.paginador import paginador_general
 from django.urls import reverse
 from datetime import datetime
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
+import os
+
 
 from .models import Pedido, Autorizacion_pedido
 
@@ -163,7 +167,17 @@ def autorizar_pedidos(request, id_pedido):#autoria el pedido de cada unidad
     usuario = get_object_or_404(Usuario, pk= id_usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
     autorizacion_pedido.save()
+ 
     return redirect(f"{reverse('listar_pedidos_unidad', kwargs={'id_usuario': id_usuario})}?success=Pedido autorizado correctamente")
+def autorizar_pedidos_almacen(request, id_pedido):#autoria el pedido de cada unidad
+ 
+    id_usuario= request.user.id
+    pedido = get_object_or_404(Pedido,pk=id_pedido)
+    usuario = get_object_or_404(Usuario, pk= id_usuario)
+    print(usuario)
+    autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
+    autorizacion_pedido.save()
+    return JsonResponse({'data':'aprobado'})
 
 #borrar
 def autorizar_pedidos_unidad_mayor(request, id_pedido):
@@ -206,3 +220,26 @@ def listar_Pedidos_secretarias(request, id_usuario):
         'data':pedidos_secretaria
         }
     return render(request, 'pedidos/listar_pedidos.html',context)
+
+
+def imprecion_solicitud(request,id_pedido):
+    pedido= get_object_or_404(Pedido,pk=id_pedido)
+    context = {
+        'pedido': pedido
+    }
+    return render(request, "imprimir/solicitud.html", context)
+
+
+def generate_pdf(request, id_pedido):
+    pedido= get_object_or_404(Pedido,pk=id_pedido)
+    context = {
+        'pedido': pedido
+    }
+    html_string = render_to_string('imprimir/imprimir.html', context)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="pedido_materiales.pdf"'
+    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error generating PDF', status=500)
+    return response
+   

@@ -19,26 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Nombre:</h5>
-                    <p class="card-text">{{ data.0.usuario.persona.nombre }} {{ data.0.usuario.persona.apellidos }}</p>
-                    <h5 class="card-title">Correo Electrónico:</h5>
-                    <p class="card-text">{{ data.0.usuario.persona.email }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Nombre:</h5>
-                    <p class="card-text">{{ data.0.usuario.persona.nombre }} {{ data.0.usuario.persona.apellidos }}</p>
-                    <h5 class="card-title">Correo Electrónico:</h5>
-                    <p class="card-text">{{ data.0.usuario.persona.email }}</p>
-                </div>
-            </div>
-        </div>
+        <!-- Repetir para otros datos personales -->
     </div>
 
     <div class="row mb-4">
@@ -53,27 +34,34 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-
                             <h5 class="card-title">Producto: {{ pedido.pedido.material.nombre }}</h5>
-                            <p class="card-text">Descipcion: {{ pedido.pedido.descripcion }}</p>
+                            <p class="card-text">Descripción: {{ pedido.pedido.descripcion }}</p>
                             <p class="card-text">Cantidad de pedido: {{ pedido.pedido.cantidad_pedida }}</p>
                         </div>
                         <div class="col-md-6">
                             <form action="" method="post">
                                 <div class="form-group">
-                                    <label for="estado-entrega">Estado de entrega:</label>
-                                    <select class="form-control" name="estado-entrega" id="estado-entrega">
+                                    <label for="estado-entrega-{{ pedido.id }}">Estado de entrega:</label>
+                                    <select class="form-control" name="estado-entrega"
+                                        id="estado-entrega-{{ pedido.id }}">
                                         <option value="Completado">Completado</option>
                                         <option value="Pendiente">Pendiente</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="cantidad-entrega">Cantidad de entrega:</label>
+                                    <label for="cantidad-entrega-{{ pedido.id }}">Cantidad de entrega:</label>
                                     <input type="number" class="form-control" name="cantidad-entrega"
-                                        id="cantidad-entrega">
+                                        id="cantidad-entrega-{{ pedido.id }}">
                                 </div>
-                                <button class="btn btn-success btn-sm mt-2" type="submit">Entregar</button>
-                                <button class="btn btn-danger btn-sm mt-2" type="submit">Rechazar</button>
+                                <div class="form-group mt-3">
+                                    <a href="{% url 'autorizar_pedido_almacen' pedido.pedido.id %}"
+                                        class="btn btn-success btn-sm" type="submit" name="action"
+                                        value="aprobar">Aprobar</a>
+                                    <a class="btn btn-danger btn-sm" type="submit" name="action"
+                                        value="rechazar">Rechazar</a>
+                                    <button class="btn btn-warning btn-sm" type="submit" name="action"
+                                        value="entregar">Entregar</button>
+                                </div>
                             </form>
                         </div>
                     </div>

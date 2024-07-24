@@ -42,6 +42,7 @@
                     Rechazado
                     {% elif autorizacion.fecha_de_autorizacion %}
                     Autorizado
+                    <a href="{% url 'imprimir' pedido.id %}" class="btn btn-danger btn-sm">PDF</a>
                     {% else %}
                     <div class="row">
                         <div class="col-6">
