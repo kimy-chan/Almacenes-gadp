@@ -86,13 +86,18 @@ def listar_pedidos(request):
     }
     return render(request, 'pedidos/listar_pedido.html', context)
 
-def informacion_pedido(request, id_usuario):
-    pedido_autorizado=Autorizacion_pedido.objects.select_related('pedido').filter(estado_autorizacion= True, pedido__usuario=id_usuario)
-    context={
-        'data': pedido_autorizado
+def informacion_pedido_no_aceptado_por_almacen(request, id_usuario):
+    pedido= Pedido.objects.filter(aprobado_unidad= True, usuario= id_usuario)
+    for x in pedido:
+        print(x.descripcion)
+    context = {
+        'data': pedido
     }
-    return render(request, 'pedidos/informacion_pedidos.html', context)
+    return render(request, 'pedidos/listar_pedidios_no_aceptados.html', context)
 
+def informacion_pedido_aceptado_por_almacen(request, id_usuario):
+    
+    pass
 
 
 def mis_pedidos(request): #muestra los pedidos de cada unidad o secretaria
@@ -149,10 +154,6 @@ def listar_pedidos_unidad(request, id_usuario): #esta suelto no esta en uso
         return JsonResponse({"mensage" :"no tienes permispo"})
     pedidos_unidad= Pedido.objects.select_related('usuario','material').filter(
         usuario__unidad=usuario.unidad.id)
-    for a in pedidos_unidad:
-        au= Autorizacion_pedido.objects.filter(pedido=a.id)
-        for e in au:
-            print(e.estado_autorizacion)
     pedidos_unidad= paginador_general(request, pedidos_unidad)
    
     context={
@@ -167,16 +168,18 @@ def autorizar_pedidos(request, id_pedido):#autoria el pedido de cada unidad
     usuario = get_object_or_404(Usuario, pk= id_usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
     autorizacion_pedido.save()
+    pedido.aprobado_unidad= True
+    pedido.save()
  
     return redirect(f"{reverse('listar_pedidos_unidad', kwargs={'id_usuario': id_usuario})}?success=Pedido autorizado correctamente")
-def autorizar_pedidos_almacen(request, id_pedido):#autoria el pedido de cada unidad
- 
+def autorizar_pedidos_almacen(request, id_pedido):#autoriza pedidos el lamacen
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
     usuario = get_object_or_404(Usuario, pk= id_usuario)
-    print(usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
     autorizacion_pedido.save()
+    pedido.aprobado_almacen= True
+    pedido.save()
     return JsonResponse({'data':'aprobado'})
 
 #borrar
@@ -188,14 +191,12 @@ def autorizar_pedidos_unidad_mayor(request, id_pedido):
     pedido.save()
     return  redirect('listar_pedidos_unidad', id_usuario)
 
-def rechazar_pedido(request, id_pedido):
+def rechazar_pedido_unidad(request, id_pedido):
     id_usuario= request.user.id
     pedido = get_object_or_404(Pedido,pk=id_pedido)
+    pedido.aprobado_unidad= False
+    pedido.save()
     usuario = get_object_or_404(Usuario, pk= id_usuario)
-    autorizacion= Autorizacion_pedido.objects.filter(pedido_id=id_pedido).all()
-    for a in autorizacion:
-        if(a.estado_autorizacion == True):
-            return JsonResponse({'mensage':'este pedido ya fue autorizado'})
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= False)
     autorizacion_pedido.save()
     return redirect(f"{reverse('listar_pedidos_unidad', kwargs={'id_usuario': id_usuario})}?pedido_rechazado=Pedido rechazado correctamente")

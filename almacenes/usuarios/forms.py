@@ -1,12 +1,12 @@
 from django import forms
-from .models import Secretaria,Usuario, Area,Unidad
+from .models import Usuario
 
 
 class Usuario_formulario(forms.ModelForm):
     confirmar_password= forms.CharField(label='confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}) )
     class Meta:
         model=Usuario
-        fields=['username','password','confirmar_password','email','encargado', 'item', 'area','rol','crear','editar','eliminar','secretaria','unidad']
+        fields=['username','password','oficina','confirmar_password','email','encargado', 'item','rol','crear','editar','eliminar','unidad']
         widgets={
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -22,14 +22,7 @@ class Usuario_formulario(forms.ModelForm):
         }
         
        
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['secretaria'].widget= forms.Select(attrs={'class': 'form-select'}, choices=[(secretaria.id,secretaria.secretaria) for secretaria in Secretaria.objects.all()])
-        self.fields['secretaria'].label='Seleccione la secretaria'
-        self.fields['area'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre_area) for rol in Area.objects.all()])
-        self.fields['area'].label='Seleccione la area'
-        self.fields['unidad'].widget= forms.Select(attrs={'class': 'form-select'},choices=[(rol.id ,rol.nombre) for rol in Unidad.objects.all()])
-        self.fields['unidad'].label='Seleccione la unidad'
+
       
         
     def save(self, commit=True):

@@ -176,132 +176,8 @@
 
 
 
-    <!--modal Roles-->
-    <div class="modal fade" id="rolesModal" tabindex="-1" role="dialog" aria-labelledby="rolesModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Areas de trabajo</h5>
-
-                </div>
-                <div class="modal-body">
-                    <div class="col-auto me-2 ms-2">
-                        <form id="id_form_trabajo" action="{% url 'crear_aras_trabajo_listar' %}" method="POST">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="nombre_area">Nombre de area</label>
-                                    <input type="text" id="nombre_area" name="nombre_area" class="form-control"
-                                        required>
-                                    <span id="error_trabajo"></span>
-                                </div>
-                                <div class="col-2" style="margin-top: 28px;">
-                                    <button id="id_area_trabajo" class="btn btn-success btn-sm"
-                                        type="submit">Añadir</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="table ">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Areas</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_table_trabajo">
-
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!--fin modal roles-->
-
-    <div class="modal fade" id="servicios" tabindex="-1" role="dialog" aria-labelledby="servicios" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">dir. servicios</h5>
-
-                </div>
-                <div class="modal-body">
-                    <div class="col-auto me-2 ms-2">
-                        <form id="id_form_servicios" action="{% url 'servicios' %}" method="POST">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="servicios">Servicios</label>
-                                    <input type="text" id="servicios" name="servicios" class="form-control" required>
-                                    <span id="error_servicios"></span>
-                                </div>
-                                <div class="col-2" style="margin-top: 28px;">
-                                    <button id="id_servicios" class="btn btn-success btn-sm"
-                                        type="submit">Añadir</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="table ">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Servicios</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_table_servicios">
-
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 
-
-    <div class="modal fade" id="departamental" tabindex="-1" role="dialog" aria-labelledby="departamental"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">dir. departamental</h5>
-
-                </div>
-                <div class="modal-body">
-                    <div class="col-auto me-2 ms-2">
-                        <form id="id_form_departamental" method="POST">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="departamental">Departamental</label>
-                                    <input type="text" id="departamental" name="departamental" class="form-control"
-                                        required>
-                                    <span id="error_departamental"></span>
-                                </div>
-                                <div class="col-2" style="margin-top: 28px;">
-                                    <button id="id_departamental" class="btn btn-success btn-sm"
-                                        type="submit">Añadir</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="table ">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">departamental</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_table_departamental">
-
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 
     <div class="modal fade" id="oficinas" tabindex="-1" role="dialog" aria-labelledby="oficinas" aria-hidden="true">
@@ -328,16 +204,6 @@
                             </div>
                         </form>
                     </div>
-                    <table class="table ">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Oficinas</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_table_oficinas">
-
-                        </tbody>
-                    </table>
                 </div>
 
             </div>
@@ -351,22 +217,7 @@
 {% endblock index %}
 
 {% block js %}
-<script src="{% static 'js/secretaria.js' %}"></script>
-<script src="{% static 'js/areas_trabajo.js' %}"></script>
-<script src="{% static 'js/unidad.js' %}"></script>
-<script src="{% static 'js/servicios.js' %}"></script>
-<script src="{% static 'js/dir.departamental.js' %}"></script>
-<script src="{% static 'js/oficinas.js' %}"></script>
 
-<script>
-    window.onload = function () {
-        listar_areas_trabajo(),
-            Listar_secretaria(),
-            listar_unidad(),
-            listar_servicios(),
-            listar_departamental(),
-            listar_oficinas()
-    }
-</script>
+
 
 {% endblock js %}

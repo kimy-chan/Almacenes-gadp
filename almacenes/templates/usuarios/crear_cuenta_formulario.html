@@ -23,9 +23,6 @@
                 </label>
                 {{ form_usuario.cargo}}
                 {{form_usuario.cargo.errors}}
-            </div>
-            <div class="col-6">
-
                 <label for="{{ form_usuario.username.id_for_label }}"> {{ form_usuario.username.label}}: </label>
                 {{ form_usuario.username }}
                 {{form_usuario.username.errors}}
@@ -36,7 +33,8 @@
                 </label>
                 {{ form_usuario.confirmar_password }}
                 {{form_usuario.confirmar_password.errors}}
-
+            </div>
+            <div class="col-6">
                 <span>Seleccione su unidad</span>
                 <div class="row">
                     <div class="col-12">
@@ -60,7 +58,24 @@
                 </div>
 
 
+                <span>Seleccione la oficina</span>
+                <div class="row">
+                    <div class="col-12">
+                        <select name="oficina" id="selectOficinas" class="form-control"></select>
+                    </div>
+                    <div class="col-4">
+                        <button onclick="" type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                            data-target="#example_oficina">
+                            Crear oficinas
+                        </button>
+                    </div>
+                    <div class="col-4">
+                        <button onclick="listar_oficinas()" type="button" class="btn btn-primary btn-sm">
+                            reloading
+                        </button>
 
+                    </div>
+                </div>
 
 
                 <label for="{{ form_usuario.rol.id_for_label }}"> {{form_usuario.rol.label}}:
@@ -81,12 +96,7 @@
                 </label>
                 {{ form_usuario.encargado_unidad}}
                 {{form_usuario.encargado_unidad.errors}}
-
-
-                <label for="{{ form_usuario.encargado_secretaria.id_for_label }}">
-                    {{form_usuario.encargado_secretaria.label}}
-                </label>
-                <span>Seleccione el cargo del grupo</span> <br>
+                <span>Es encargado de undiad ?</span> <br>
                 {{ form_usuario.encargado}}
                 {{form_usuario.encargado.errors}}
 
@@ -178,6 +188,41 @@
     </div>
 </div>
 
+<div class="modal fade" id="example_oficina" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">oficina</h5>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-auto me-2 ms-2">
+                    <form id="form_oficina" action="{%url 'crear_oficinas' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <label for="selectUnidad">Unidad</label>
+                            <div class="col-12">
+                                <select name="unidad" id="selectUnidad2" class="form-control"></select>
+                            </div>
+                            <div class="col-6">
+                                <label for="id_oficina">Nombre de oficina</label>
+                                <input type="text" id="id_oficina" name="oficina" class="form-control" required>
+                                <span id="error_oficina"></span>
+                                <span id="success_oficina"></span>
+                            </div>
+                            <div class="col-2" style="margin-top: 28px;">
+                                <button id="guardar_oficina" class="btn btn-success btn-sm"
+                                    type="submit">Añadir</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 {% endblock index %}
 
@@ -187,30 +232,50 @@
 
 
 <script>
-    function listar_unidades() {
+    function listar_unidades2() {
         axios.get('unidad')
             .then((resultado) => {
                 if (resultado.data.data) {
-                    resultado.data.data.forEach((element) => {
-                        const selectSecretaria = document.getElementById('selectUnidad');
-                        selectSecretaria.innerHTML = '';
-                        resultado.data.data.forEach(element => {
-                            const option = document.createElement('option');
-                            option.value = element.id;
-                            option.textContent = element.nombre;
-                            selectSecretaria.appendChild(option);
-                        });
+                    const selectUnidad = document.getElementById('selectUnidad2');
+                    selectUnidad.innerHTML = '';
 
-                    })
-
+                    //
+                    resultado.data.data.forEach(element => {
+                        const option = document.createElement('option');
+                        option.value = element.id;
+                        option.textContent = element.nombre;
+                        selectUnidad.appendChild(option);
+                    });
                 }
             })
             .catch((e) => {
                 console.log(e);
-                alert(e)
-            })
-
+                alert('Error: ' + e.message);  // Proporcionar un mensaje de error más claro
+            });
     }
+
+    function listar_unidades() {
+        axios.get('unidad')
+            .then((resultado) => {
+                if (resultado.data.data) {
+                    const selectUnidad = document.getElementById('selectUnidad');
+                    selectUnidad.innerHTML = '';
+
+                    //
+                    resultado.data.data.forEach(element => {
+                        const option = document.createElement('option');
+                        option.value = element.id;
+                        option.textContent = element.nombre;
+                        selectUnidad.appendChild(option);
+                    });
+                }
+            })
+            .catch((e) => {
+                console.log(e);
+                alert('Error: ' + e.message);  // Proporcionar un mensaje de error más claro
+            });
+    }
+
     document.getElementById('undiad_secretaria').addEventListener('click', (e) => {
         e.preventDefault()
         const formulario = document.getElementById('unidadform2');
@@ -260,12 +325,104 @@
 
     }
 
+
+
+
+
+
+    document.getElementById('undiad_secretaria').addEventListener('click', (e) => {
+        e.preventDefault()
+        const formulario = document.getElementById('unidadform2');
+        const selectSecretaria = document.getElementById('selectSecretaria');
+        const selected_secretaria_id = selectSecretaria.value;
+        const formData = new FormData(formulario);
+        formData.append('secretaria_id', selected_secretaria_id);
+        axios.post('Crear_unidad_secretaria', formData)
+            .then((resultado) => {
+
+                if (resultado.data.data) {
+                    document.getElementById('error_unidad2').innerHTML = ''
+                    document.getElementById('success').innerHTML = 'Guardado'
+                } else if (resultado.data.error) {
+                    document.getElementById('error_unidad2').innerHTML = resultado.data.error
+                }
+            })
+            .catch((e) => {
+                alert(e)
+            })
+
+
+    })
+
+    document.getElementById('selectUnidad').addEventListener('change', (e) => {
+        const selectedUnidadId = e.target.value; // Obtener el valor seleccionado
+        axios.get(`oficinas/${selectedUnidadId}`)
+            .then((resultado) => {
+                if (resultado.data.data) {
+                    const selectOficinas = document.getElementById('selectOficinas');
+                    selectOficinas.innerHTML = '';  // Limpiar las opciones existente
+                    resultado.data.data.forEach(element => {
+                        const option = document.createElement('option');
+                        option.value = element.id;
+                        option.textContent = element.nombre;
+                        selectOficinas.appendChild(option);
+                    });
+                }
+            })
+            .catch((e) => {
+                console.log(e);
+                alert(e);
+            });
+    });
+
+
+    function listar_oficinas() {
+
+    }
+
+
+
+
+
+
+    document.getElementById('guardar_oficina').addEventListener('click', (e) => {
+        e.preventDefault()
+        const formulario = document.getElementById('form_oficina');
+        const select_unidad = document.getElementById('selectUnidad2');
+        const select_unidad_id = select_unidad.value;
+        const formData = new FormData(formulario);
+        formData.append('secretaria_id', select_unidad_id);
+
+        axios.post('crear_oficinas', formData)
+            .then((resultado) => {
+                console.log(resultado.data.error);
+                if (resultado.data.data) {
+                    document.getElementById('error_oficina').innerHTML = ''
+                    document.getElementById('success_oficina').innerHTML = 'Guardado'
+                } else if (resultado.data.error) {
+                    document.getElementById('error_oficina').innerHTML = resultado.data.error
+                }
+            })
+            .catch((e) => {
+                alert(e)
+            })
+
+
+    })
+
+
+
+
 </script>
+
+
+
 
 <script>
     window.onload = function () {
         Listar_secretaria(),
             listar_unidades()
+        listar_unidades2()
 
     }
 </script>

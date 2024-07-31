@@ -29,43 +29,25 @@
                 <td>{{ pedido.cantidad_pedida }} {{ pedido.unidad_manejo }}</td>
                 <td>{{ pedido.fecha_pedido|date:"m/d/y" }}</td>
                 <td>
-                    {% with pedido.autorizacion_pedido_set.first as autorizacion %}
-                    {% if autorizacion.fecha_de_autorizacion %}
-                    {{ autorizacion.fecha_de_autorizacion|date:"m/d/y" }}
-                    {% endif %}
-                    {% endwith %}
+
                 </td>
                 <td>
-                    {% with pedido.autorizacion_pedido_set.first as autorizacion %}
-                    {% if autorizacion %}
-                    {% if not autorizacion.estado_autorizacion %}
-                    Rechazado
-                    {% elif autorizacion.fecha_de_autorizacion %}
-                    Autorizado
+                    {% if pedido.aprobado_unidad == None %}
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{% url 'autorizar_pedido' pedido.id %}"
+                                class="btn btn-success btn-sm">Autorizar</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{% url 'rechazar_pedido_unidad' pedido.id %}"
+                                class="btn btn-danger btn-sm">Rechazar</a>
+                        </div>
+                    </div>
+                    {% elif pedido.aprobado_unidad %}
                     <a href="{% url 'imprimir' pedido.id %}" class="btn btn-danger btn-sm">PDF</a>
-                    {% else %}
-                    <div class="row">
-                        <div class="col-6">
-                            <a href="{% url 'autorizar_pedido' pedido.id %}"
-                                class="btn btn-success btn-sm">Autorizar</a>
-                        </div>
-                        <div class="col-6">
-                            <a href="{% url 'rechazar_pedido' pedido.id %}" class="btn btn-danger btn-sm">Rechazar</a>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% else %}
-                    <div class="row">
-                        <div class="col-6">
-                            <a href="{% url 'autorizar_pedido' pedido.id %}"
-                                class="btn btn-success btn-sm">Autorizar</a>
-                        </div>
-                        <div class="col-6">
-                            <a href="{% url 'rechazar_pedido' pedido.id %}" class="btn btn-danger btn-sm">Rechazar</a>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
+                    {% elif pedido.aprobado_unidad == False %}
+                    <button class="btn btn-danger btn-sm" disabled>Rechazado</button>
+                    {% endif%}
                 </td>
             </tr>
             {% endfor %}
