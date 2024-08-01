@@ -101,6 +101,10 @@ def Crear_unidad_secretaria(request):
         try:
             unidad= Unidad.objects.create(nombre=unidad, secretaria=secretaria)
             unidad.save()
+            oficina_exists = Oficinas.objects.filter(nombre='Ninguna').exists()
+            if not oficina_exists:
+                oficina= Oficinas.objects.create(nombre='Ninguna', unidad= unidad)
+                oficina.save()
             return JsonResponse({'data':True})
         except IntegrityError:
             return JsonResponse({"error": "El valor  ya existe"})

@@ -42,11 +42,11 @@
                     </div>
                     <div class="col-12 pt-3 text-center ">
                         <button onclick="listar_unidades()" type="button" class="btn btn-primary btn-sm">
-                            Cargar Unidades
+                            Actulizar
                         </button>
                         <button onclick="Listar_secretarias()" type="button" class="btn btn-success btn-sm"
                             data-toggle="modal" data-target="#modalUnidad">
-                            Cargar Secretarías
+                            Crear unidad
                         </button>
                         <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
                             data-target="#exampleModal">
@@ -64,17 +64,12 @@
                         <select name="oficina" id="selectOficinas" class="form-control"></select>
                     </div>
                     <div class="col-4">
-                        <button onclick="" type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                            data-target="#example_oficina">
+                        <button onclick="listar_unidades2() " type="button" class="btn btn-primary btn-sm"
+                            data-toggle="modal" data-target="#example_oficina">
                             Crear oficinas
                         </button>
                     </div>
-                    <div class="col-4">
-                        <button onclick="listar_oficinas()" type="button" class="btn btn-primary btn-sm">
-                            reloading
-                        </button>
 
-                    </div>
                 </div>
 
 
@@ -204,7 +199,10 @@
                             <label for="selectUnidad">Unidad</label>
                             <div class="col-12">
                                 <select name="unidad" id="selectUnidad2" class="form-control"></select>
+
+
                             </div>
+
                             <div class="col-6">
                                 <label for="id_oficina">Nombre de oficina</label>
                                 <input type="text" id="id_oficina" name="oficina" class="form-control" required>
@@ -260,9 +258,8 @@
                 if (resultado.data.data) {
                     const selectUnidad = document.getElementById('selectUnidad');
                     selectUnidad.innerHTML = '';
-
-                    //
                     resultado.data.data.forEach(element => {
+                        console.log(element);
                         const option = document.createElement('option');
                         option.value = element.id;
                         option.textContent = element.nombre;
@@ -354,11 +351,14 @@
 
     })
 
-    document.getElementById('selectUnidad').addEventListener('change', (e) => {
+    document.getElementById('selectUnidad').addEventListener('click', (e) => {
+        console.log('hola');
         const selectedUnidadId = e.target.value; // Obtener el valor seleccionado
+        console.log(selectedUnidadId);
         axios.get(`oficinas/${selectedUnidadId}`)
             .then((resultado) => {
                 if (resultado.data.data) {
+                    console.log(resultado);
                     const selectOficinas = document.getElementById('selectOficinas');
                     selectOficinas.innerHTML = '';  // Limpiar las opciones existente
                     resultado.data.data.forEach(element => {
@@ -374,14 +374,6 @@
                 alert(e);
             });
     });
-
-
-    function listar_oficinas() {
-
-    }
-
-
-
 
 
 

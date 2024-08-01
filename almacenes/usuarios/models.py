@@ -37,16 +37,9 @@ def crear_entidades_por_defecto(sender, **kwargs):
     if sender.name == 'almacenes.usuarios':
         secretaria, created = Secretaria.objects.get_or_create(secretaria='Secretaria departamental administrativa financiera')
         unidad, created = Unidad.objects.get_or_create(nombre='Financiera', secretaria=secretaria)
+        Oficinas.objects.get_or_create(nombre='Ninguna', unidad=unidad)
         Oficinas.objects.get_or_create(nombre='Almacenes', unidad=unidad)
-@receiver(post_migrate)
-def crear_valor_defecto_undiad(sender, **kwargs):
-    if sender.name == 'almacenes':
-        Unidad.objects.get_or_create(nombre='Ninguno')
-        
-@receiver(post_migrate)
-def crear_valor_defecto_oficinas(sender, **kwargs):
-    if sender.name == 'almacenes':
-        Oficinas.objects.get_or_create(nombre='Ninguno')
+      
 
     
 class Usuario(AbstractBaseUser, PermissionsMixin):
