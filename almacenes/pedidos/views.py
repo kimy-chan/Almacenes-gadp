@@ -79,25 +79,44 @@ def realizar_pedido(request, id_material):
     return render(request , 'pedidos/realizar_pedido.html', context)
 
 def listar_pedidos(request):
-    listando_pedidos = Pedido.objects.select_related('usuario', 'material').all().distinct('usuario')
-
+    listando_pedidos = Pedido.objects.filter(aprobado_unidad=True).distinct('usuario')
     context={
-        'data':listando_pedidos
+       'data':listando_pedidos
     }
     return render(request, 'pedidos/listar_pedido.html', context)
 
-def informacion_pedido_no_aceptado_por_almacen(request, id_usuario):
-    pedido= Pedido.objects.filter(aprobado_unidad= True, usuario= id_usuario)
-    for x in pedido:
-        print(x.descripcion)
+def listando_pedido_almacen(request, id_usuario):
+    pedido = Pedido.objects.filter(aprobado_unidad=True, usuario=id_usuario)       
     context = {
         'data': pedido
-    }
-    return render(request, 'pedidos/listar_pedidios_no_aceptados.html', context)
+        }
+    return render(request, 'pedidos/lintando.pedidos.almacen.html', context)
 
-def informacion_pedido_aceptado_por_almacen(request, id_usuario):
-    
-    pass
+def lista_pedido_por_id(request, id_pedido):
+    pedido=get_object_or_404(Pedido, pk= id_pedido)
+    data ={
+        'id':pedido.id,
+        'codigo':pedido.material.codigo,
+        'nombre': pedido.material.nombre,
+        'cantidad': pedido.cantidad_pedida
+        
+    }
+    return JsonResponse({'data':data})
+
+def realizar_entrega(request):
+    if request.method == 'POST':
+        id= request.POST['pedido_id']
+        cantidad_entregada = request.POST['cantidad_entregada']
+        pedido = get_object_or_404(Pedido,pk= id)
+        if int(cantidad_entregada) > pedido.cantidad_pedida:
+            return JsonResponse({'data':'Cantidad excedida'})
+        elif  cantidad_entregada==pedido.cantidad_pedida:
+            pedido.estado_pedido_almacen ='Completada'
+        elif int(cantidad_entregada) < pedido.cantidad_pedida:
+            pedido.estado_pedido_almacen ='Incompleto'
+        pedido.cantidad_entrega = cantidad_entregada
+        pedido.save()
+        return JsonResponse({'data':'recivido'})
 
 
 def mis_pedidos(request): #muestra los pedidos de cada unidad o secretaria
@@ -170,26 +189,19 @@ def autorizar_pedidos(request, id_pedido):#autoria el pedido de cada unidad
     autorizacion_pedido.save()
     pedido.aprobado_unidad= True
     pedido.save()
- 
     return redirect(f"{reverse('listar_pedidos_unidad', kwargs={'id_usuario': id_usuario})}?success=Pedido autorizado correctamente")
-def autorizar_pedidos_almacen(request, id_pedido):#autoriza pedidos el lamacen
-    id_usuario= request.user.id
+
+def autorizar_pedidos_almacen(request, id_pedido, id_usuario):#autoriza pedidos el lamacen
     pedido = get_object_or_404(Pedido,pk=id_pedido)
     usuario = get_object_or_404(Usuario, pk= id_usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= True)
     autorizacion_pedido.save()
     pedido.aprobado_almacen= True
     pedido.save()
-    return JsonResponse({'data':'aprobado'})
+    return redirect(f"{reverse('informacion_pedido', kwargs={'id_usuario': id_usuario})}?success=Pedido autorizado correctamente")
 
-#borrar
-def autorizar_pedidos_unidad_mayor(request, id_pedido):
-    id_usuario= request.user.id
-    pedido = get_object_or_404(Pedido,pk=id_pedido)
-    pedido.estado_autorizacion_unidad= True
-    pedido.fecha_de_autorizacion= datetime.now()
-    pedido.save()
-    return  redirect('listar_pedidos_unidad', id_usuario)
+
+
 
 def rechazar_pedido_unidad(request, id_pedido):
     id_usuario= request.user.id
@@ -199,28 +211,11 @@ def rechazar_pedido_unidad(request, id_pedido):
     usuario = get_object_or_404(Usuario, pk= id_usuario)
     autorizacion_pedido= Autorizacion_pedido.objects.create(pedido=pedido,usuario= usuario, estado_autorizacion= False)
     autorizacion_pedido.save()
+    
     return redirect(f"{reverse('listar_pedidos_unidad', kwargs={'id_usuario': id_usuario})}?pedido_rechazado=Pedido rechazado correctamente")
     
-#borrar
-def rechazar_pedido_unidad_mayor(request, id_pedido):
-    id_usuario= request.user.id
-    pedido = get_object_or_404(Pedido,pk=id_pedido)
-    pedido.estado_pedido_unidad_mayor_rechazar= True
-    pedido.save()
-    return  redirect('listar_pedidos_unidad', id_usuario)
 
 
-
-# borrar
-  
-def listar_Pedidos_secretarias(request, id_usuario):
-    usuario= get_object_or_404(Usuario, pk=id_usuario)
-    pedidos_secretaria= Pedido.objects.select_related('usuario','material').filter(usuario__secretaria=usuario.secretaria.id)
-    pedidos_secretaria = paginador_general(request, pedidos_secretaria)
-    context={
-        'data':pedidos_secretaria
-        }
-    return render(request, 'pedidos/listar_pedidos.html',context)
 
 
 def imprecion_solicitud(request,id_pedido):

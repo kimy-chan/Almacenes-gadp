@@ -1,5 +1,5 @@
 {% extends '../base.html' %}
-
+{% load static %}
 {% block index %}
 
 <div class="container mt-4">
@@ -79,3 +79,12 @@
 </div>
 
 {% endblock index %}
+
+
+{% block js %}
+
+<script src="{% static 'js/alertas.js' %}">
+
+</script>
+
+{% endblock js %}

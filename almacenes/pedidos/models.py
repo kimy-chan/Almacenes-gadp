@@ -21,6 +21,7 @@ class Pedido(models.Model):
     material= models.ForeignKey(Materiales, on_delete=models.RESTRICT,  blank= False, null=False)
     aprobado_unidad = models.BooleanField( blank= True, null=True) 
     aprobado_almacen = models.BooleanField( blank= True, null=True) 
+    estado_pedido_almacen = models.CharField(blank=False, null=False, default='Pendiente')
     fecha_pedido= models.DateTimeField(auto_now_add=True, blank=False, null=False)
     fecha_entrega_salida= models.DateTimeField(blank=True, null=True)
    
@@ -40,12 +41,3 @@ class Autorizacion_pedido(models.Model):#guarda la informacion de cada pedido au
     def __str__(self) -> str:
         return  f"{self.estado_autorizacion},{self.pedido},{self.usuario},{self.fecha_de_autorizacion}"
 
-class Entrega_almacen(models.Model):
-    ESTADO_PEDIDO_CHOICES=[
-        ('Pendiente','Pendiente'),
-        ('Incompleto','Incompleto'),
-        ('Completo','Completo')
-    ]
-    estado_pedido_almacen = models.CharField(choices=ESTADO_PEDIDO_CHOICES, default='Pendiente')
-    pedido=models.ForeignKey(Pedido,on_delete=models.RESTRICT, blank= False, null=False)
-    usuario=models.ForeignKey(Usuario,on_delete=models.RESTRICT, blank= False, null=False)
